@@ -1,0 +1,82 @@
+.header,
+.footer {
+    background-color: #ececec;
+    height: 50px;
+}
+
+.main {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    height: 100%;
+}
+
+.coloumn-add-stat {
+    background-color: #5da2d5;
+}
+
+.coloumn-add-stat,
+.coloumn-tasks,
+.coloumn-in-progress,
+.coloumn-finished {
+    min-height: 100vh;
+}
+
+.add-task {
+    border-radius: 5px;
+    background-color: #90ccf4;
+}
+
+.text-area {
+    resize: none;
+}
+
+.div-btn-add {
+    width: 50%;
+}
+
+.btn-add {
+    width: 100%;
+}
+
+.statitics {
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+}
+
+.li-statitics {
+    background-color: #90ccf4;
+}
+.coloumn-tasks {
+    background-color: #f3d250;
+}
+
+.coloumn-in-progress {
+    background-color: #90ccf4;
+}
+.coloumn-finished {
+    background-color: #f78888;
+}
+
+.li-card-footer {
+    margin: 0px;
+    padding: 0px;
+}
+
+// логин
+.parent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    .login-form {
+        background-color: #ececec;
+        border-radius: 5px;
+        position: absolute;
+        top: 15%;
+        left: 8.5%;
+    }
+}
