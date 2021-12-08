@@ -8,8 +8,9 @@ register = [
         .trim()
         .escape()
         .withMessage("incorrect username"),
-    check("email", "incorrect email")
+    check("email")
         .isEmail()
+        .withMessage("incorrect email")
         .custom((email) => {
             return User.findOne({ email: email }).then((user) => {
                 if (user) {
@@ -17,6 +18,7 @@ register = [
                 }
             });
         }),
+
     check("password")
         .isLength({ min: 8 })
         .withMessage("password must be at least 8 chars long")

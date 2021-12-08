@@ -23,7 +23,7 @@ login = [
         .custom(async (password, { req }) => {
             return await User.findOne({ email: req.body.email }).then(
                 async (user) => {
-                    console.log(user);
+                    // console.log(user);
                     if (user) {
                         const comparePassword = await bcrypt.compare(
                             password,

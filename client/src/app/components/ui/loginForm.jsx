@@ -15,7 +15,7 @@ const LoginForm = () => {
     const [errors, setErrors] = useState({});
     const [enterError, setEnterError] = useState(null);
 
-    const { signIn } = useAuth();
+    const { logIn } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -72,7 +72,7 @@ const LoginForm = () => {
 
         console.log(data);
         try {
-            await signIn(data);
+            await logIn(data);
         } catch (error) {
             setEnterError(error.message);
         }

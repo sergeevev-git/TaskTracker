@@ -9,8 +9,11 @@ const config = require("config");
 
 const verifySignUp = require("../middleware/verifySingUp");
 const verifySignIn = require("../middleware/verifySingIn");
+const verifyRefresh = require("../middleware/verifyRefresh");
+const verifyAuth = require("../middleware/verifyAuth");
 
 const authController = require("../controllers/authController");
+const userController = require("../controllers/userController");
 
 router.post(
     "/registration",
@@ -20,6 +23,10 @@ router.post(
 
 router.post("/login", verifySignIn.login, authController.login);
 
-router.get("/refresh", authController.refresh);
+router.post("/logout", authController.logout);
+
+router.get("/refresh", verifyRefresh.refresh, authController.refresh);
+
+router.get("/users", verifyAuth.checkAuth, userController.getAllUsers);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const Registerform = () => {
     });
     const [errors, setErrors] = useState({});
 
-    const { signUp } = useAuth();
+    const { registration } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -71,7 +71,7 @@ const Registerform = () => {
         console.log(data);
         try {
             console.log(data);
-            await signUp(data);
+            await registration(data);
         } catch (error) {
             console.log("123", error);
             setErrors(error);

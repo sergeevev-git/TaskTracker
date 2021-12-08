@@ -1,18 +1,21 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import configFile from "../config/config.json";
+import configFile from "../config/config.json";
 
-// axios.defaults.baseURL = configFile.apiEndPoint;
+const axiosInstance = axios.create({
+    baseURL: configFile.API_END_POINT,
+    withCredentiials: true,
+});
 
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     function (config) {
+        config.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
+            configFile.TOKEN_ACCESS_KEY
+        )}`;
+        config.headers.post["Content-Type"] = "application/json";
+        config.headers.get["Content-Type"] = "application/json";
         console.log("config", config);
-        // if (configFile.isFireBase) {
-        //     const containSlash = /\/$/gi.test(config.url);
-        //     config.url =
-        //         (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
-        // }
         return config;
     },
     function (error) {
@@ -20,16 +23,8 @@ axios.interceptors.request.use(
     }
 );
 
-// function transformData(data) {
-//     return data
-//         ? Object.keys(data).map((key) => ({
-//               ...data[key],
-//           }))
-//         : [];
-// }
-
 //  перехватчик, 1й аргумент  - положительный ответ, 2 - error(unexpected)
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (res) => {
         // if (configFile.isFireBase) {
         //     res.data = { content: transformData(res.data) };
@@ -39,6 +34,7 @@ axios.interceptors.response.use(
     function (error) {
         const expectedErrors =
             error.response &&
+            error.response.status >= 400 &&
             error.response.status >= 400 &&
             error.response.status < 500;
         if (!expectedErrors) {
@@ -50,10 +46,10 @@ axios.interceptors.response.use(
 );
 
 const httpService = {
-    get: axios.get,
-    post: axios.post,
-    put: axios.put,
-    delete: axios.delete,
+    get: axiosInstance.get,
+    post: axiosInstance.post,
+    put: axiosInstance.put,
+    delete: axiosInstance.delete,
 };
 
 export default httpService;
