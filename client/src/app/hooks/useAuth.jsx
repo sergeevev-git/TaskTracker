@@ -5,14 +5,13 @@ import { setTokens, removeTokens } from "../services/localStorage.service";
 import { useHistory } from "react-router";
 import httpService from "../services/http.service";
 import configFile from "../config/config";
-import axios from "axios";
 
 const AuthContext = React.createContext();
 
-const httpRefresh = axios.create({
-    baseURL: "http://localhost:3000/api/auth/",
-    withCredentiials: true,
-});
+// const httpRefresh = axios.create({
+//     baseURL: "http://localhost:3000/api/auth/",
+//     withCredentiials: true,
+// });
 
 export const useAuth = () => {
     return useContext(AuthContext);
@@ -24,9 +23,11 @@ const AuthProvider = ({ children }) => {
         id: "",
     });
     const [isLogin, setIsLogin] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [error, setError] = useState(null);
     const [enterErrors, setEnterErrors] = useState(null);
+
     const history = useHistory();
 
     useEffect(() => {
@@ -116,9 +117,11 @@ const AuthProvider = ({ children }) => {
     }
 
     async function refresh() {
+        setIsLoading(true);
         try {
-            const { data } = await httpRefresh.get("refresh");
-
+            // const { data } = await httpRefresh.get("refresh");
+            const { data } = await httpService.get("auth/refresh");
+            console.log("refresh auth", data);
             setTokens(data.accessToken);
             setCurrentUser(() => ({
                 name: data.userData.name,
@@ -128,6 +131,8 @@ const AuthProvider = ({ children }) => {
         } catch (error) {
             errorCatcher(error);
             console.log(error.response);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -139,7 +144,14 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ registration, logIn, logOut, isLogin, currentUser }}
+            value={{
+                registration,
+                logIn,
+                logOut,
+                isLogin,
+                isLoading,
+                currentUser,
+            }}
         >
             {children}
         </AuthContext.Provider>

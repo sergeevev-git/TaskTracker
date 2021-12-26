@@ -6,8 +6,12 @@ const TextAreaField = ({
     name,
     placeholder,
     value,
+    classLabel,
+    rows,
+    cols,
+    maxLength,
     onChange,
-    error
+    error,
 }) => {
     function handleChange({ target }) {
         // console.log(target.name, target.value);
@@ -15,39 +19,41 @@ const TextAreaField = ({
     }
 
     const getInputClasses = () => {
-        return "form-control" + (error ? " is-invalid" : "");
+        return "form-control text-area" + (error ? " is-invalid" : "");
     };
 
     return (
-        <div className="mb-4">
-            <label htmlFor={name}>{label}</label>
+        <>
+            <label htmlFor={name} className={classLabel}>
+                {label}
+            </label>
             <div className="input-group has-validation">
                 <textarea
                     id={name}
                     name={name}
                     value={value}
+                    rows={rows}
+                    cols={cols}
+                    maxLength={maxLength}
                     placeholder={placeholder}
                     onChange={handleChange}
                     className={getInputClasses()}
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
-        </div>
+        </>
     );
-};
-
-TextAreaField.defaultProps = {
-    type: "text"
 };
 
 TextAreaField.propTypes = {
     label: PropTypes.string,
     type: PropTypes.string,
     name: PropTypes.string,
+    className: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    error: PropTypes.string
+    error: PropTypes.string,
 };
 
 export default TextAreaField;

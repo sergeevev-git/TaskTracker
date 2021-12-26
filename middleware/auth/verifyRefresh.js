@@ -1,5 +1,5 @@
-const Token = require("../models/token");
-const tokenService = require("../services/tokenService");
+const Token = require("../../models/token");
+const tokenService = require("../../services/tokenService");
 
 const { check, validationResult } = require("express-validator");
 

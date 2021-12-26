@@ -7,10 +7,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const verifySignUp = require("../middleware/verifySingUp");
-const verifySignIn = require("../middleware/verifySingIn");
-const verifyRefresh = require("../middleware/verifyRefresh");
-const verifyAuth = require("../middleware/verifyAuth");
+const verifySignUp = require("../middleware/auth/verifySingUp");
+const verifySignIn = require("../middleware/auth/verifySingIn");
+const verifyRefresh = require("../middleware/auth/verifyRefresh");
+const verifyAuth = require("../middleware/auth/verifyAuth");
 
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");

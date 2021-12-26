@@ -4,14 +4,48 @@
     height: 50px;
 }
 
+.header {
+    .logo {
+        text-shadow: 2px -2px 10px gray;
+        margin: 0;
+    }
+    .login-text {
+        text-shadow: 2px -2px 10px gray;
+    }
+}
+
 .main {
     padding-top: 50px;
     padding-bottom: 50px;
     height: 100%;
-}
+    .coloumn-header {
+        text-align: center;
+        h4 {
+            text-shadow: 2px -2px 10px gray;
+            margin: 16px 0 0 6px;
+        }
+    }
+    .header-statitics {
+        margin: 10px 0 0 6px;
+    }
 
-.coloumn-add-stat {
-    background-color: #5da2d5;
+    .coloumn-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .coloumn-add-stat {
+        background-color: #5da2d5;
+    }
+    .coloumn-tasks {
+        background-color: #f3d250;
+    }
+    .coloumn-in-progress {
+        background-color: #90ccf4;
+    }
+    .coloumn-finished {
+        background-color: #f78888;
+    }
 }
 
 .coloumn-add-stat,
@@ -19,23 +53,26 @@
 .coloumn-in-progress,
 .coloumn-finished {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .add-task {
     border-radius: 5px;
     background-color: #90ccf4;
-}
-
-.text-area {
-    resize: none;
-}
-
-.div-btn-add {
-    width: 50%;
-}
-
-.btn-add {
-    width: 100%;
+    box-shadow: 2px -2px 10px gray;
+    .text-area {
+        resize: none;
+    }
+    .div-deadline {
+        width: 50%;
+    }
+    .div-btn-add {
+        width: 50%;
+    }
+    .btn-add {
+        width: 100%;
+    }
 }
 
 .statitics {
@@ -43,25 +80,68 @@
     margin-top: 20px;
     margin-bottom: 20px;
     width: 50%;
+    box-shadow: 2px -2px 10px gray;
+    .li-statitics {
+        background-color: #90ccf4;
+    }
 }
 
-.li-statitics {
-    background-color: #90ccf4;
-}
-.coloumn-tasks {
-    background-color: #f3d250;
-}
+.task-card {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 2px -2px 10px gray;
+    width: 90%;
 
-.coloumn-in-progress {
-    background-color: #90ccf4;
-}
-.coloumn-finished {
-    background-color: #f78888;
-}
-
-.li-card-footer {
-    margin: 0px;
-    padding: 0px;
+    .task-card-header {
+        border-radius: 5px 5px 0 0;
+        // background-color: #f7f7f7;
+        border-bottom: 1px solid;
+        border-color: #c9c7c7;
+        text-align: right;
+        padding: 2px 10px 0px;
+        p {
+            color: rgba(#000000, 0.7);
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+    }
+    .task-card-text {
+        padding: 3px;
+        background-color: rgba(#ffffff, 0.5);
+        padding: 5px 10px 2px;
+        p {
+            color: rgba(#000000, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+            text-align-last: right;
+            margin-bottom: 2px;
+            // margin: 0;
+        }
+    }
+    .task-card-footer {
+        border-radius: 0 0 5px 5px;
+        // background-color: #f7f7f7;
+        background-color: #ffffff;
+        border-top: 1px solid;
+        border-color: #c9c7c7;
+        display: flex;
+        justify-content: end;
+        padding: 0px 4px;
+        p,
+        i {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        p {
+            margin: 4px 6px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
 }
 
 // логин
@@ -84,7 +164,7 @@
         border-radius: 5px;
         position: absolute;
         top: 30%;
-        left: 45%;
+        left: 8.25%;
         .numbers {
             font-size: 48px;
             font-weight: 600;

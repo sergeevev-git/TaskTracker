@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import configFile from "../config/config.json";
+import { setTokens } from "../services/localStorage.service";
 
 const axiosInstance = axios.create({
     baseURL: configFile.API_END_POINT,
@@ -15,7 +16,7 @@ axiosInstance.interceptors.request.use(
         )}`;
         config.headers.post["Content-Type"] = "application/json";
         config.headers.get["Content-Type"] = "application/json";
-        console.log("config", config);
+
         return config;
     },
     function (error) {
@@ -26,17 +27,35 @@ axiosInstance.interceptors.request.use(
 //  перехватчик, 1й аргумент  - положительный ответ, 2 - error(unexpected)
 axiosInstance.interceptors.response.use(
     (res) => {
-        // if (configFile.isFireBase) {
-        //     res.data = { content: transformData(res.data) };
-        // }
         return res;
     },
-    function (error) {
+    async function (error) {
+        const originalRequest = error.config;
+        if (
+            error.response.status === 401 &&
+            error.config &&
+            !error.config._isRetry
+        ) {
+            originalRequest._isRetry = true;
+            try {
+                const { data } = await axios.get(
+                    `${configFile.API_END_POINT}auth/refresh`,
+                    { withCredentiials: true }
+                );
+                setTokens(data.accessToken);
+                originalRequest.headers.Authorization = `Bearer ${localStorage.getItem(
+                    configFile.TOKEN_ACCESS_KEY
+                )}`;
+                return axiosInstance.request(originalRequest);
+            } catch (error) {
+                console.log(error);
+                toast.error("unauthorized user");
+            }
+        }
         const expectedErrors =
             error.response &&
-            error.response.status >= 400 &&
-            error.response.status >= 400 &&
-            error.response.status < 500;
+            (error.response.status === 400 ||
+                (error.response.status >= 402 && error.response.status < 500));
         if (!expectedErrors) {
             console.log(error);
             toast.error("some error happened");
