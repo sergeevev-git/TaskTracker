@@ -3,7 +3,7 @@ import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import { useAuth } from "../../hooks/useAuth";
 
-const Registerform = () => {
+const RegisterForm = () => {
     const [data, setData] = useState({
         username: "",
         email: "",
@@ -23,30 +23,34 @@ const Registerform = () => {
 
     const validatorConfig = {
         username: {
-            isRequired: { message: "Имя обязательная для заполнение" },
+            isRequired: { message: "Имя обязательно для заполнения" },
+            min: {
+                message: "Имя должно быть минимум 3 символов",
+                value: 3,
+            },
         },
         email: {
             isRequired: {
-                message: "Электронная почта обязательна для заполнение",
+                message: "Электронная почта обязательна для заполнения",
             },
             isEmail: { message: "Электронная почта введена некорректно" },
         },
         password: {
-            isRequired: { message: "пароль обязателен для заполнение" },
+            isRequired: { message: "Пароль обязателен для заполнения" },
             isCapitalSymbol: {
-                message: "пароль должен содержать заглавные буквы",
+                message: "Пароль должен содержать заглавные буквы",
             },
             isContainDigit: {
-                message: "пароль должен содержать цифры",
+                message: "Пароль должен содержать цифры",
             },
             min: {
-                message: "пароль должен быть минимум 8 символов",
+                message: "Пароль должен быть минимум 8 символов",
                 value: 8,
             },
         },
         confirmPassword: {
             compare: {
-                message: "введенные пароли не совпадают",
+                message: "Введенные пароли не совпадают",
                 value: data.password,
             },
         },
@@ -68,12 +72,10 @@ const Registerform = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
         try {
-            console.log(data);
             await registration(data);
         } catch (error) {
-            console.log("123", error);
+            console.log("registration error", error);
             setErrors(error);
         }
     };
@@ -112,7 +114,7 @@ const Registerform = () => {
             />
             {/* {enterError && <p className="text-danger">{enterError}</p>} */}
             <button
-                className="btn btn-primary w-100 mx-auto"
+                className="btn btn-primary w-100 mx-auto mt-4"
                 type="submit"
                 disabled={!isValid}
                 // disabled={!isValid || enterError}
@@ -123,4 +125,4 @@ const Registerform = () => {
     );
 };
 
-export default Registerform;
+export default RegisterForm;

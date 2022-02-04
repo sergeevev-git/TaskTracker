@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const tokenService = require("../services/tokenService");
+const tokensService = require("./tokensService");
 
 exports.createUser = async (username, email, password) => {
     const newUser = new User({
@@ -13,6 +13,12 @@ exports.createUser = async (username, email, password) => {
     return newUser.id;
 };
 
+exports.findUserById = async (id) => {
+    const user = await User.findOne({ _id: id });
+
+    return user;
+};
+
 exports.findUserByEmail = async (email) => {
     const user = await User.findOne({ email: email });
 
@@ -20,7 +26,7 @@ exports.findUserByEmail = async (email) => {
 };
 
 exports.refreshUser = async (refreshToken) => {
-    const tokenData = tokenService.validateRefreshToken(refreshToken);
+    const tokenData = tokensService.validateRefreshToken(refreshToken);
 
     return tokenData;
 };

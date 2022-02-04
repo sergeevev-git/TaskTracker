@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import { setTokens, removeTokens } from "../services/localStorage.service";
+import localStorageService, {
+    setTokens,
+    removeTokens,
+} from "../services/localStorage.service";
 import { useHistory } from "react-router";
 import httpService from "../services/http.service";
 import configFile from "../config/config";
+import usersService from "../services/users.service";
+import Loader from "../components/common/loader";
 
 const AuthContext = React.createContext();
 
@@ -18,16 +23,10 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState({
-        name: "",
-        id: "",
-    });
-    const [isLogin, setIsLogin] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-
     const [error, setError] = useState(null);
     const [enterErrors, setEnterErrors] = useState(null);
-
     const history = useHistory();
 
     useEffect(() => {
@@ -52,30 +51,38 @@ const AuthProvider = ({ children }) => {
         }
     }, [enterErrors]);
 
-    async function registration({
-        username,
-        email,
-        password,
-        confirmPassword,
-    }) {
-        try {
-            const { data } = await httpService.post(
-                "auth/registration",
-                {
-                    username,
-                    email,
-                    password,
-                    confirmPassword,
-                }
-                // {
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                // }
-            );
+    useEffect(() => {
+        if (localStorageService.getAccessToken()) {
+            setIsLoading(true);
+            getUserData();
+        }
+        setIsLoading(false);
+    }, []);
 
-            setTokens(data.accessToken);
-            logIn({ email: email, password: password });
+    async function getUserData() {
+        setIsLoading(true);
+        try {
+            const userData = await usersService.getCurrentUser();
+            setCurrentUser(userData);
+        } catch (error) {
+            errorCatcher(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function registration({ username, email, password, confirmPassword }) {
+        try {
+            const { data } = await httpService.post("auth/registration", {
+                username,
+                email,
+                password,
+                confirmPassword,
+            });
+
+            setTokens(data.accessToken, data.userId);
+            await getUserData();
+            history.push("/");
         } catch (error) {
             errorCatcher(error);
         }
@@ -88,13 +95,11 @@ const AuthProvider = ({ children }) => {
                 password,
             });
 
-            setTokens(data.accessToken);
-            setCurrentUser(() => ({
-                name: data.userData.name,
-                id: data.userData.id,
-            }));
-            setIsLogin(true);
-            history.push("/");
+            setTokens(data.accessToken, data.userId);
+            await getUserData();
+            history.push(
+                history.location.state ? history.location.state.from.pathname : "/"
+            );
         } catch (error) {
             errorCatcher(error);
         }
@@ -104,12 +109,9 @@ const AuthProvider = ({ children }) => {
         try {
             const { data } = await httpService.post("auth/logOut");
 
-            setCurrentUser(() => ({
-                name: "",
-                id: "",
-            }));
+            setCurrentUser(null);
             removeTokens();
-            setIsLogin(false);
+            history.push("/");
         } catch (error) {
             errorCatcher(error);
             console.log(error.response);
@@ -121,18 +123,18 @@ const AuthProvider = ({ children }) => {
         try {
             // const { data } = await httpRefresh.get("refresh");
             const { data } = await httpService.get("auth/refresh");
+
             console.log("refresh auth", data);
-            setTokens(data.accessToken);
-            setCurrentUser(() => ({
-                name: data.userData.name,
-                id: data.userData.id,
-            }));
-            setIsLogin(true);
+            setTokens(data.accessToken, data.userId);
+            await getUserData();
         } catch (error) {
             errorCatcher(error);
             console.log(error.response);
         } finally {
             setIsLoading(false);
+            history.push(
+                history.location.state ? history.location.state.from.pathname : "/"
+            );
         }
     }
 
@@ -148,21 +150,17 @@ const AuthProvider = ({ children }) => {
                 registration,
                 logIn,
                 logOut,
-                isLogin,
                 isLoading,
                 currentUser,
             }}
         >
-            {children}
+            {!isLoading ? children : <Loader />}
         </AuthContext.Provider>
     );
 };
 
 AuthProvider.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 export default AuthProvider;

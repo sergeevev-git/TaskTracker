@@ -8,6 +8,8 @@ const Footer = () => {
                 <a className="text-dark right" href="#!">
                     More Links
                 </a>
+                <i className="bi bi-github"></i>
+                <i className="bi bi-telegram"></i>
             </div>
         </footer>
     );

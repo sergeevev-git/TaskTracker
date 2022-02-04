@@ -7,6 +7,7 @@ const TextField = ({
     name,
     value,
     classLabel,
+    placeholder,
     onChange,
     error,
 }) => {
@@ -26,15 +27,18 @@ const TextField = ({
 
     return (
         <>
-            <label htmlFor={name} className={classLabel}>
-                {label}
-            </label>
+            {label && (
+                <label htmlFor={name} className={classLabel}>
+                    {label}
+                </label>
+            )}
             <div className="input-group has-validation">
                 <input
                     type={showPsw ? "text" : type}
                     id={name}
                     name={name}
                     value={value}
+                    placeholder={placeholder}
                     onChange={handleChange}
                     className={getInputClasses()}
                 />

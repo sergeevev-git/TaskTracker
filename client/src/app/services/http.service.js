@@ -31,17 +31,14 @@ axiosInstance.interceptors.response.use(
     },
     async function (error) {
         const originalRequest = error.config;
-        if (
-            error.response.status === 401 &&
-            error.config &&
-            !error.config._isRetry
-        ) {
+        if (error.response.status === 401 && error.config && !error.config._isRetry) {
             originalRequest._isRetry = true;
             try {
-                const { data } = await axios.get(
-                    `${configFile.API_END_POINT}auth/refresh`,
-                    { withCredentiials: true }
-                );
+                // const { data } = await axios.get(
+                //     `${configFile.API_END_POINT}auth/refresh`,
+                //     { withCredentiials: true }
+                // );
+                const { data } = await axiosInstance.get(`auth/refresh`);
                 setTokens(data.accessToken);
                 originalRequest.headers.Authorization = `Bearer ${localStorage.getItem(
                     configFile.TOKEN_ACCESS_KEY

@@ -41,7 +41,6 @@ const TodosProvider = ({ children }) => {
     }, [enterErrors]);
 
     async function getTodos() {
-        console.log("123");
         try {
             const { todos } = await todosService.fetchAll(currentUser.id);
             setTodos(todos);
@@ -51,12 +50,12 @@ const TodosProvider = ({ children }) => {
         }
     }
 
-    async function addTodo({ user, title, description, deadline }) {
+    async function addTodo({ user, title, text, deadline }) {
         try {
             const { todo } = await todosService.add({
                 user,
                 title,
-                description,
+                text,
                 deadline,
             });
             console.log("addTodo data", todo);
@@ -78,9 +77,33 @@ const TodosProvider = ({ children }) => {
         }
     }
 
-    async function completeTodo(id) {
+    async function newTodo(id) {
         try {
-            const { todo } = await todosService.complete(id);
+            const { todo } = await todosService.new(id);
+            console.log("newTodo todo", todo);
+            // setTodos([...todos], todo);
+            // console.log(todos);
+            setLoaded(true);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    }
+
+    async function inWorkTodo(id, drop) {
+        try {
+            const { todo } = await todosService.inWork(id, drop);
+            console.log("inWorkTodo todo", todo);
+            // setTodos([...todos], todo);
+            // console.log(todos);
+            setLoaded(true);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    }
+
+    async function completeTodo(id, drop) {
+        try {
+            const { todo } = await todosService.complete(id, drop);
             console.log("completeTodo todo", todo);
             // setTodos([...todos], todo);
             // console.log(todos);
@@ -121,9 +144,11 @@ const TodosProvider = ({ children }) => {
         <TodosContext.Provider
             value={{
                 todos,
-                addTodo,
                 getTodos,
+                addTodo,
                 importantTodo,
+                newTodo,
+                inWorkTodo,
                 completeTodo,
                 deleteTodo,
             }}
@@ -134,10 +159,7 @@ const TodosProvider = ({ children }) => {
 };
 
 TodosProvider.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 export default TodosProvider;

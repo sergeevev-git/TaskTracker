@@ -13,13 +13,9 @@ const verifyRefresh = require("../middleware/auth/verifyRefresh");
 const verifyAuth = require("../middleware/auth/verifyAuth");
 
 const authController = require("../controllers/authController");
-const userController = require("../controllers/userController");
+const usersController = require("../controllers/usersController");
 
-router.post(
-    "/registration",
-    verifySignUp.register,
-    authController.registration
-);
+router.post("/registration", verifySignUp.register, authController.registration);
 
 router.post("/login", verifySignIn.login, authController.login);
 
@@ -27,6 +23,6 @@ router.post("/logout", authController.logout);
 
 router.get("/refresh", verifyRefresh.refresh, authController.refresh);
 
-router.get("/users", verifyAuth.checkAuth, userController.getAllUsers);
+// router.get("/users", verifyAuth.checkAuth, usersController.getAllUsers);
 
 module.exports = router;

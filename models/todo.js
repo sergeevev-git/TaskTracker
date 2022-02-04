@@ -4,9 +4,8 @@ const schema = new Schema({
     title: { type: String, required: true },
     text: { type: String, required: true },
     deadline: { type: Date, required: true, default: Date.now },
-    inwork: false,
+    status: { type: String, required: true, default: "new" },
     important: false,
-    completed: false,
     user: { type: Types.ObjectId, ref: "User" },
 });
 

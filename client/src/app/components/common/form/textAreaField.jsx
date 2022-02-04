@@ -24,9 +24,11 @@ const TextAreaField = ({
 
     return (
         <>
-            <label htmlFor={name} className={classLabel}>
-                {label}
-            </label>
+            {label && (
+                <label htmlFor={name} className={classLabel}>
+                    {label}
+                </label>
+            )}
             <div className="input-group has-validation">
                 <textarea
                     id={name}

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import LoginForm from "../components/ui/loginForm";
-import Registerform from "../components/ui/registerForm";
+import RegisterForm from "../components/ui/registerForm";
 
 const Login = () => {
     const { type } = useParams();
-    const [formType, setFormType] = useState(
-        type === "register" ? type : "login"
-    );
+    const [formType, setFormType] = useState(type === "register" ? type : "login");
 
     const toggleFormType = () => {
         setFormType((prev) => (prev === "register" ? "login" : "register"));
@@ -16,17 +14,17 @@ const Login = () => {
     return (
         <>
             <div className="parent">
-                <div className="container-fluid">
+                <div className="container-fluid main">
                     <div className="row ">
-                        <div className="col d-flex flex-column coloumn-add-stat"></div>
-                        <div className="col d-flex flex-column coloumn-tasks"></div>
-                        <div className="col d-flex flex-column coloumn-in-progress"></div>
-                        <div className="col d-flex flex-column coloumn-finished"></div>
+                        <div className="col-12 col-md-6 col-lg-3 coloumn-add-stat"></div>
+                        <div className="col-12 col-md-6 col-lg-3 coloumn-tasks"></div>
+                        <div className="col-12 col-md-6 col-lg-3 coloumn-in-progress"></div>
+                        <div className="col-12 col-md-6 col-lg-3 coloumn-finished"></div>
                         <div className="col-md-4 offset-md-3 shadow p-4 login-form">
                             {formType === "register" ? (
                                 <>
                                     <h3 className="mb-4">Register</h3>
-                                    <Registerform />
+                                    <RegisterForm />
                                     <p className="mt-2">
                                         already have an account?{" "}
                                         <span

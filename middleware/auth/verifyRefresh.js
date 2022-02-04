@@ -1,5 +1,5 @@
 const Token = require("../../models/token");
-const tokenService = require("../../services/tokenService");
+const tokenService = require("../../services/tokensService");
 
 const { check, validationResult } = require("express-validator");
 
@@ -9,16 +9,12 @@ refresh = [
         .isEmpty()
         .withMessage("refresh token if empty")
         .custom(async (refreshToken) => {
-            const userData = await tokenService.validateRefreshToken(
-                refreshToken
-            );
+            const userData = await tokenService.validateRefreshToken(refreshToken);
 
             const isTokenDB = await tokenService.findToken(refreshToken);
 
             if (!userData || !isTokenDB) {
-                throw new Error(
-                    "Tokens data doesn't match. User unauthorized."
-                );
+                throw new Error("Tokens data doesn't match. User unauthorized.");
             }
             return true;
         }),

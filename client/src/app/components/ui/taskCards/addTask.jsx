@@ -11,7 +11,7 @@ const AddTask = () => {
     const [data, setData] = useState({
         user: currentUser.id,
         title: "",
-        description: "",
+        text: "",
         deadline: "",
     });
     const [errors, setErrors] = useState({});
@@ -31,7 +31,7 @@ const AddTask = () => {
                 message: "Название задачи обязательно для заполнения",
             },
         },
-        description: {
+        text: {
             isRequired: {
                 message: "Описание задачи обязательно для заполнения",
             },
@@ -70,7 +70,7 @@ const AddTask = () => {
             setData((prevState) => ({
                 ...prevState,
                 title: "",
-                description: "",
+                text: "",
                 deadline: "",
             }));
         } catch (error) {
@@ -81,54 +81,36 @@ const AddTask = () => {
     return (
         <div className="add-task">
             <form className="mt-1 mb-30" onSubmit={handleSubmit}>
-                <div className="ms-3 me-3">
+                <div className="div-title">
                     <TextField
-                        label="title"
+                        // label="title"
                         name="title"
                         value={data.title}
                         classLabel="text-white mb-0"
+                        placeholder="task title"
                         onChange={handleChange}
                         // error={errors.name}
                     />
-                    {/* <label
-                        htmlFor="name"
-                        className="form-label text-white mb-0 "
-                    >
-                        name
-                    </label>
-                    <input type="text" className="form-control" id="name" /> */}
                 </div>
-                <div className="ms-3 me-3">
+                <div className="div-text-area">
                     <TextAreaField
-                        label="description"
-                        name="description"
-                        value={data.description}
+                        // label="text"
+                        name="text"
+                        value={data.text}
                         classLabel="text-white mb-0"
                         rows="5"
                         cols="10"
                         maxLength="300"
+                        placeholder="task description"
                         onChange={handleChange}
                         // error={errors.description}
                     />
-                    {/* <label
-                        htmlFor="description"
-                        className="form-label text-white mb-0 "
-                    >
-                        description
-                    </label>
-                    <textarea
-                        className="form-control text-area"
-                        id="description"
-                        rows="5"
-                        cols="10"
-                        maxLength="300"
-                    ></textarea> */}
                 </div>
 
-                <div className="row ms-1 me-1 d-flex justify-content-between">
-                    <div className="col mb-4 div-deadline">
+                <div className="row d-flex justify-content-between control">
+                    <div className="col-auto div-deadline">
                         <TextField
-                            label="deadline"
+                            // label="deadline"
                             name="deadline"
                             type="date"
                             value={data.deadline}
@@ -136,25 +118,14 @@ const AddTask = () => {
                             onChange={handleChange}
                             // error={errors.deadline}
                         />
-                        {/* <label
-                            htmlFor="deadline"
-                            className="form-label text-white mb-0 "
-                        >
-                            deadline
-                        </label>
-                        <input
-                            type="date"
-                            className="form-control"
-                            id="deadline"
-                        /> */}
                     </div>
 
-                    <div className="mt-4 col-auto div-btn-add">
+                    <div className="col d-flex justify-content-end div-btn-add">
                         <button
                             className="btn btn-primary btn-add"
                             // disabled={!isValid || enterError}
                         >
-                            add task
+                            <i className="bi bi-plus-square"></i>
                         </button>
                     </div>
                 </div>

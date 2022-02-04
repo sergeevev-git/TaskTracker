@@ -2,5 +2,6 @@
     "API_END_POINT": "http://localhost:3000/api/",
     "TOKEN_ACCESS_KEY": "jwt-access-token",
     "TOKEN_REFRESH_KEY": "jwt-refresh-token",
-    "EXPIRES_KEY": "jwt-expires"
+    "EXPIRES_KEY": "jwt-expires",
+    "CURRENT_USER_ID": "current-user-id"
 }

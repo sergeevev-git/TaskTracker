@@ -33,15 +33,15 @@ const LoginForm = () => {
             isEmail: { message: "Электронная почта введена некорректно" },
         },
         password: {
-            isRequired: { message: "пароль обязателен для заполнения" },
+            isRequired: { message: "Пароль обязателен для заполнения" },
             isCapitalSymbol: {
-                message: "пароль должен содержать заглавные буквы",
+                message: "Пароль должен содержать заглавные буквы",
             },
             isContainDigit: {
-                message: "пароль должен содержать цифры",
+                message: "Пароль должен содержать цифры",
             },
             min: {
-                message: "пароль должен быть минимум 8 символов",
+                message: "Пароль должен быть минимум 8 символов",
                 value: 8,
             },
         },
@@ -95,11 +95,7 @@ const LoginForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
-            <CheckboxField
-                value={data.stayOn}
-                onChange={handleChange}
-                name="stayOn"
-            >
+            <CheckboxField value={data.stayOn} onChange={handleChange} name="stayOn">
                 Оставаться в системе
             </CheckboxField>
             {enterError && <p className="text-danger">{enterError}</p>}

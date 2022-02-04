@@ -3,8 +3,10 @@ const router = Router();
 
 const verifyAuth = require("../middleware/auth/verifyAuth");
 
-const userController = require("../controllers/userController");
+const usersController = require("../controllers/usersController");
 
-router.get("/allUsers", verifyAuth.checkAuth, userController.getAllUsers);
+router.get("/:id", verifyAuth.checkAuth, usersController.getCurrentUser);
+
+// router.get("/allUsers", verifyAuth.checkAuth, usersController.getAllUsers);
 
 module.exports = router;
