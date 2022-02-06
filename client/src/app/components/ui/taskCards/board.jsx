@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useTodos } from "../../../hooks/useTodos";
 import AddTask from "./addTask";
 import Statistic from "./statistic";
 import TodoList from "./todoList";
@@ -13,22 +12,14 @@ const Board = ({ board, ...props }) => {
     };
     const ref = useRef(null);
 
-    const {
-        onDragOver,
-        onDragLeave,
-        onDragEnd,
-        onDrop,
-        currentTask,
-        statistic,
-    } = props;
+    const { onDragOver, onDragLeave, onDragEnd, onDrop, currentTask, statistic } = props;
 
     return (
         <>
             {board.title === "add task" ? (
                 <div
                     className={
-                        "col-12 col-md-6 col-lg-3 coloumn-" +
-                        boardStyle[board.title]
+                        "col-12 col-md-6 col-lg-3 coloumn-" + boardStyle[board.title]
                     }
                 >
                     <div className="coloumn-header ">

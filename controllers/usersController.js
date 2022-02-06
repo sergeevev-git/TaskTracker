@@ -5,7 +5,7 @@ getCurrentUser = async (req, res) => {
     try {
         const { userId } = req.query;
         const user = await usersService.findUserById(userId);
-        console.log("user", user);
+        // console.log("user", user);
         return res.status(201).json({
             username: user.username,
             id: user._id,

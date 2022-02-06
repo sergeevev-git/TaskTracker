@@ -24,12 +24,12 @@ const todosService = {
         return data;
     },
 
-    // update: async (payload) => {
-    //     console.log("payload", payload);
-    //     const { data } = await httpService.post(todosEndPoint + "add", payload);
-    //     console.log("todosService", data);
-    //     return data;
-    // },
+    edit: async (payload) => {
+        console.log("payload", payload);
+        const { data } = await httpService.post(todosEndPoint + "add", payload);
+        console.log("todosService", data);
+        return data;
+    },
 
     new: async (id) => {
         console.log("new payload", id);

@@ -4,68 +4,71 @@ import InWorkCard from "../components/ui/taskCards/InWorkTasks";
 import NewTask from "../components/ui/taskCards/newTask";
 import AddTask from "../components/ui/taskCards/addTask";
 import Statistic from "../components/ui/taskCards/statistic";
-import { useTodos } from "../hooks/useTodos";
-
 import TodoList from "../components/ui/taskCards/todoList";
 import Board from "../components/ui/taskCards/board";
+import { useDispatch, useSelector } from "react-redux";
+import { getTodos, getBoadrs, newTodo, inWorkTodo, completeTodo } from "../store/todos";
 
 const Todos = () => {
-    const { getTodos, todos } = useTodos();
+    const boards = useSelector(getBoadrs());
+    const todos = useSelector(getTodos());
+    const dispatch = useDispatch();
+
     // const [newTodos, setNewTodos] = useState([]);
     // const [inWorkTodos, setInWorkTodos] = useState([]);
     // const [finishedTodos, setFinishedTodos] = useState([]);
-    const { newTodo, inWorkTodo, completeTodo } = useTodos();
-    const [boards, setBoadrs] = useState([
-        {
-            id: 0,
-            title: "add task",
-            tasks: [],
-        },
-        {
-            id: 1,
-            title: "new tasks",
-            tasks: [],
-        },
-        {
-            id: 2,
-            title: "in progress",
-            tasks: [],
-        },
-        {
-            id: 3,
-            title: "finished",
-            tasks: [],
-        },
-    ]);
+
+    // const [boards, setBoadrs] = useState([
+    //     {
+    //         id: 0,
+    //         title: "add task",
+    //         tasks: [],
+    //     },
+    //     {
+    //         id: 1,
+    //         title: "new tasks",
+    //         tasks: [],
+    //     },
+    //     {
+    //         id: 2,
+    //         title: "in progress",
+    //         tasks: [],
+    //     },
+    //     {
+    //         id: 3,
+    //         title: "finished",
+    //         tasks: [],
+    //     },
+    // ]);
 
     const [currentBoard, setCurrentBoard] = useState(null);
     const [currentTask, setCurrentTask] = useState(null);
     const [statistic, setStatistic] = useState([]);
     const [editableTask, setEditableTask] = useState({});
 
-    useEffect(() => {
-        getTodos();
-    }, []);
+    // useEffect(() => {
+    //     getTodos();
+    // }, []);
 
-    useEffect(() => {
-        setBoadrs((prevState) => [
-            ...prevState,
-            (boards[1].tasks = todos.filter((todo) => todo.status === "new")),
-            (boards[2].tasks = todos.filter((todo) => todo.status === "inWork")),
-            (boards[3].tasks = todos.filter((todo) => todo.status === "completed")),
-        ]);
-        setStatistic((prevState) => [
-            ...prevState,
-            (statistic[0] = todos.length),
-            (statistic[1] = boards[1].tasks.length),
-            (statistic[2] = boards[2].tasks.length),
-            (statistic[3] = boards[3].tasks.length),
-        ]);
+    // useEffect(() => {
+    //     setBoadrs((prevState) => [
+    //         ...prevState,
+    //         (boards[1].tasks = todos.filter((todo) => todo.status === "new")),
+    //         (boards[2].tasks = todos.filter((todo) => todo.status === "inWork")),
+    //         (boards[3].tasks = todos.filter((todo) => todo.status === "completed")),
+    //     ]);
+    //     setStatistic((prevState) => [
+    //         ...prevState,
+    //         (statistic[0] = todos.length),
+    //         (statistic[1] = boards[1].tasks.length),
+    //         (statistic[2] = boards[2].tasks.length),
+    //         (statistic[3] = boards[3].tasks.length),
+    //     ]);
 
-        // setNewTodos(todos.filter((todo) => todo.status === "new"));
-        // setInWorkTodos(todos.filter((todo) => todo.status === "inWork"));
-        // setFinishedTodos(todos.filter((todo) => todo.status === "completed"));
-    }, [todos]);
+    //     // setNewTodos(todos.filter((todo) => todo.status === "new"));
+    //     // setInWorkTodos(todos.filter((todo) => todo.status === "inWork"));
+    //     // setFinishedTodos(todos.filter((todo) => todo.status === "completed"));
+    // }, [todos]);
 
     const handleDragOver = (e, ref) => {
         e.preventDefault();
@@ -94,10 +97,13 @@ const Todos = () => {
         console.log("drop task", task);
 
         board.title === "in progress"
-            ? inWorkTodo(task, true)
+            ? // ? inWorkTodo(task, true)
+              dispatch(inWorkTodo(task, true))
             : board.title === "finished"
-            ? completeTodo(task, true)
-            : newTodo(task);
+            ? // ? completeTodo(task, true)
+              dispatch(completeTodo(task, true))
+            : // : newTodo(task);
+              dispatch(newTodo(task));
     };
 
     const handleEditTask = (id) => {

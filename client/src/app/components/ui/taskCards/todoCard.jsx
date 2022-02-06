@@ -1,6 +1,12 @@
 import React, { useRef } from "react";
-import { useTodos } from "../../../hooks/useTodos";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import {
+    importantTodo,
+    inWorkTodo,
+    completeTodo,
+    deleteTodo,
+} from "../../../store/todos";
 
 const TodoCard = ({
     _id: id,
@@ -12,15 +18,9 @@ const TodoCard = ({
     board,
     ...props
 }) => {
-    const { importantTodo, inWorkTodo, completeTodo, deleteTodo } = useTodos();
-    const {
-        onDragOver,
-        onDragLeave,
-        onDragStart,
-        onDragEnd,
-        onDrop,
-        handleEditTask,
-    } = props;
+    const dispatch = useDispatch();
+    const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop, handleEditTask } =
+        props;
     const ref = useRef(null);
 
     const checkCondition = (condition) => {
@@ -61,7 +61,7 @@ const TodoCard = ({
                                     data-placement="bottom"
                                     title="important"
                                     role="button"
-                                    onClick={() => importantTodo(id)}
+                                    onClick={() => dispatch(importantTodo(id))}
                                 ></i>
                                 <i
                                     className="bi bi-pencil m-1 text-secondary"
@@ -83,7 +83,7 @@ const TodoCard = ({
                                     data-placement="bottom"
                                     title="take to work"
                                     role="button"
-                                    onClick={() => inWorkTodo(id, false)}
+                                    onClick={() => dispatch(inWorkTodo(id, false))}
                                 ></i>
                             </>
                         )}
@@ -97,7 +97,7 @@ const TodoCard = ({
                             data-placement="bottom"
                             title="complete"
                             role="button"
-                            onClick={() => completeTodo(id, false)}
+                            onClick={() => dispatch(completeTodo(id, false))}
                         ></i>
                         <i
                             className={
@@ -109,7 +109,7 @@ const TodoCard = ({
                             data-placement="bottom"
                             title="delete"
                             role="button"
-                            onClick={() => deleteTodo(id)}
+                            onClick={() => dispatch(deleteTodo(id))}
                         ></i>
                     </div>
                 </div>

@@ -3,10 +3,12 @@ import TextField from "../../common/form/textField";
 import TextAreaField from "../../common/form/textAreaField";
 import { validator } from "../../../utils/validator";
 import { toast } from "react-toastify";
-import { useTodos } from "../../../hooks/useTodos";
 import { useAuth } from "../../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../../../store/todos";
 
 const AddTask = () => {
+    const dispatch = useDispatch();
     const { currentUser } = useAuth();
     const [data, setData] = useState({
         user: currentUser.id,
@@ -16,7 +18,6 @@ const AddTask = () => {
     });
     const [errors, setErrors] = useState({});
     const [enterError, setEnterError] = useState(null);
-    const { addTodo } = useTodos();
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -55,7 +56,7 @@ const AddTask = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) {
@@ -66,7 +67,8 @@ const AddTask = () => {
         }
         try {
             console.log("handleSubmit", data);
-            await addTodo(data);
+            // await addTodo(data);
+            dispatch(addTodo(data));
             setData((prevState) => ({
                 ...prevState,
                 title: "",
