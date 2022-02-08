@@ -1,6 +1,6 @@
 import React from "react";
 
-const background = () => {
+const Background = () => {
     return (
         <div className="container-fluid main">
             <div className="row ">
@@ -13,4 +13,4 @@ const background = () => {
     );
 };
 
-export default background;
+export default Background;

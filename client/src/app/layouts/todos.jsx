@@ -1,50 +1,27 @@
 import React, { useState, useEffect } from "react";
-import FinishedCard from "../components/ui/taskCards/finishedTasks";
-import InWorkCard from "../components/ui/taskCards/InWorkTasks";
-import NewTask from "../components/ui/taskCards/newTask";
-import AddTask from "../components/ui/taskCards/addTask";
-import Statistic from "../components/ui/taskCards/statistic";
-import TodoList from "../components/ui/taskCards/todoList";
+import { toast } from "react-toastify";
 import Board from "../components/ui/taskCards/board";
 import { useDispatch, useSelector } from "react-redux";
 import { getTodos, getBoadrs, newTodo, inWorkTodo, completeTodo } from "../store/todos";
+import { getTodosError } from "../store/todos";
 
 const Todos = () => {
+    const dispatch = useDispatch();
     const boards = useSelector(getBoadrs());
     const todos = useSelector(getTodos());
-    const dispatch = useDispatch();
-
-    // const [newTodos, setNewTodos] = useState([]);
-    // const [inWorkTodos, setInWorkTodos] = useState([]);
-    // const [finishedTodos, setFinishedTodos] = useState([]);
-
-    // const [boards, setBoadrs] = useState([
-    //     {
-    //         id: 0,
-    //         title: "add task",
-    //         tasks: [],
-    //     },
-    //     {
-    //         id: 1,
-    //         title: "new tasks",
-    //         tasks: [],
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "in progress",
-    //         tasks: [],
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "finished",
-    //         tasks: [],
-    //     },
-    // ]);
+    const todosError = useSelector(getTodosError());
 
     const [currentBoard, setCurrentBoard] = useState(null);
     const [currentTask, setCurrentTask] = useState(null);
     const [statistic, setStatistic] = useState([]);
     const [editableTask, setEditableTask] = useState({});
+
+    useEffect(() => {
+        console.log(todosError);
+        if (todosError) {
+            toast.error(todosError);
+        }
+    }, [todosError]);
 
     // useEffect(() => {
     //     getTodos();
@@ -97,13 +74,10 @@ const Todos = () => {
         console.log("drop task", task);
 
         board.title === "in progress"
-            ? // ? inWorkTodo(task, true)
-              dispatch(inWorkTodo(task, true))
+            ? dispatch(inWorkTodo(task, true))
             : board.title === "finished"
-            ? // ? completeTodo(task, true)
-              dispatch(completeTodo(task, true))
-            : // : newTodo(task);
-              dispatch(newTodo(task));
+            ? dispatch(completeTodo(task, true))
+            : dispatch(newTodo(task));
     };
 
     const handleEditTask = (id) => {
@@ -148,71 +122,6 @@ const Todos = () => {
                             />
                         );
                     })}
-                    {/* <div className="col-12 col-md-6 col-lg-3 coloumn-add-stat">
-                        <div className="coloumn-header ">
-                            <h4>add task</h4>
-                        </div>
-                        <hr />
-                        <AddTask />
-                        <div className="coloumn-header header-statitics">
-                            <h4>{boards[0].title}</h4>
-                        </div>
-                        <hr />
-                        <Statistic
-                            total={todos.length}
-                            new={boards[1].tasks.length}
-                            inWork={boards[2].tasks.length}
-                            finished={boards[3].tasks.length}
-                        />
-                    </div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-tasks">
-                        <div className="coloumn-header ">
-                            <h4>{boards[1].title}</h4>
-                        </div>
-                        <hr />
-                        <div className="coloumn-content">
-                            <TodoList
-                                todos={boards[1].tasks}
-                                onDragOver={handleDragOver}
-                                onDragLeave={handleDragLeave}
-                                onDragStart={handleDragStart}
-                                onDragEnd={handleDragEnd}
-                                onDrop={handleDrop}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-in-progress">
-                        <div className="coloumn-header">
-                            <h4>{boards[2].title}</h4>
-                        </div>
-                        <hr />
-                        <div className="coloumn-content">
-                            <TodoList
-                                todos={boards[2].tasks}
-                                onDragOver={handleDragOver}
-                                onDragLeave={handleDragLeave}
-                                onDragStart={handleDragStart}
-                                onDragEnd={handleDragEnd}
-                                onDrop={handleDrop}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-finished">
-                        <div className="coloumn-header">
-                            <h4>{boards[3].title}</h4>
-                        </div>
-                        <hr />
-                        <div className="coloumn-content">
-                            <TodoList
-                                todos={boards[3].tasks}
-                                onDragOver={handleDragOver}
-                                onDragLeave={handleDragLeave}
-                                onDragStart={handleDragStart}
-                                onDragEnd={handleDragEnd}
-                                onDrop={handleDrop}
-                            />
-                        </div>
-                    </div> */}
                 </div>
             </div>
 

@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
-import { Redirect, useHistory } from "react-router-dom";
-import Loader from "../components/common/loader";
-import { useAuth } from "../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import Background from "../components/ui/background";
+import { clearTodosStore } from "../store/todos";
+import { logOut } from "../store/user";
 
 const LogOut = () => {
-    const { logOut } = useAuth();
+    const dispatch = useDispatch();
     useEffect(() => {
-        logOut();
+        dispatch(logOut());
+        dispatch(clearTodosStore());
     }, []);
 
-    return <Loader />;
+    return <Background />;
 };
 
 export default LogOut;

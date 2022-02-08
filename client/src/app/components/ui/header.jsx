@@ -1,10 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-// import Loader from "../common/loader";
+import { getCurrentUserData, getIsLoggedIn } from "../../store/user";
 
 const Header = () => {
-    const { isLoading, currentUser } = useAuth();
+    const isLoggedIn = useSelector(getIsLoggedIn());
+    const currentUser = useSelector(getCurrentUserData());
 
     return (
         <header>
@@ -14,12 +15,7 @@ const Header = () => {
                         <Link to="/">TaskTracker</Link>
                     </h2>
 
-                    {/* {isLoading ? (
-                        <div className="nav-item me-4">
-                            <Loader />
-                        </div>
-                    ) :  */}
-                    {currentUser ? (
+                    {isLoggedIn ? (
                         <>
                             <div className="d-flex">
                                 <div className="me-4">{currentUser.username}</div>
@@ -33,27 +29,6 @@ const Header = () => {
                             <Link to="/login">login/sign up</Link>
                         </div>
                     )}
-
-                    {/* <ul className="navbar-nav mb-lg-0">
-                        {isLoading ? (
-                            <li className="nav-item me-4">
-                                <Loader />
-                            </li>
-                        ) : currentUser ? (
-                            <>
-                                <li className="nav-item me-4">{currentUser.username}</li>
-                                <li className="nav-item me-4 login-text" role="button">
-                                    <Link to="/login" onClick={logOut}>
-                                        logout
-                                    </Link>
-                                </li>
-                            </>
-                        ) : (
-                            <li className="nav-item me-4" role="button">
-                                <Link to="/login">login</Link>
-                            </li>
-                        )}
-                    </ul> */}
                 </div>
             </nav>
         </header>

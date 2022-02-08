@@ -1,11 +1,12 @@
 import React from "react";
-import { useAuth } from "../hooks/useAuth";
 import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getIsLoggedIn } from "../store/user";
 
 const Main = () => {
-    const { currentUser } = useAuth();
+    const isLoggedIn = useSelector(getIsLoggedIn());
 
-    return currentUser ? (
+    return isLoggedIn ? (
         <Redirect to="/todos" />
     ) : (
         <div className="parent">

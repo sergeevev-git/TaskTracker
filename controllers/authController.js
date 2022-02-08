@@ -11,11 +11,11 @@ registration = async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 12);
-        const userId = await usersService.createUser(username, email, hashedPassword);
+        const { id } = await usersService.createUser(username, email, hashedPassword);
 
-        tokens = await tokensService.generateTokens(userId, email, username);
+        tokens = await tokensService.generateTokens(id, email, username);
 
-        await tokensService.saveToken(userId, tokens.refreshToken);
+        await tokensService.saveToken(id, tokens.refreshToken);
 
         res.cookie("refreshToken", tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -24,7 +24,7 @@ registration = async (req, res) => {
 
         return res.status(201).json({
             accessToken: tokens.accessToken,
-            userId: userId,
+            userId: id,
             message: "User has been created",
         });
     } catch (error) {
@@ -35,10 +35,10 @@ registration = async (req, res) => {
 login = async (req, res) => {
     try {
         const { email } = req.body;
-        const user = await usersService.findUserByEmail(email);
+        const { id, username } = await usersService.findUserByEmail(email);
 
-        tokens = await tokensService.generateTokens(user.id, email, user.username);
-        await tokensService.saveToken(user.id, tokens.refreshToken);
+        tokens = await tokensService.generateTokens(id, email, username);
+        await tokensService.saveToken(id, tokens.refreshToken);
 
         res.cookie("refreshToken", tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -47,7 +47,7 @@ login = async (req, res) => {
 
         return res.status(200).json({
             accessToken: tokens.accessToken,
-            userId: user.id,
+            userId: id,
             message: "login successful",
         });
     } catch (error) {

@@ -4,6 +4,7 @@ const tokenService = require("../../services/tokensService");
 exports.checkAuth = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
+        console.log("authHeader: ", authHeader);
 
         if (!authHeader) {
             return res.status(401).json({
@@ -12,6 +13,7 @@ exports.checkAuth = (req, res, next) => {
         }
 
         const accessToken = authHeader.split(" ")[1];
+        console.log("accessToken: ", accessToken);
 
         if (!accessToken) {
             return res.status(401).json({
@@ -20,6 +22,7 @@ exports.checkAuth = (req, res, next) => {
         }
 
         const tokenData = tokenService.validateAccessToken(accessToken);
+        console.log("tokenData: ", tokenData);
 
         if (!tokenData) {
             return res.status(401).json({

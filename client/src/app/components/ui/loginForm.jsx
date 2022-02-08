@@ -2,27 +2,25 @@ import React, { useState, useEffect } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckboxField from "../common/form/checkBoxField";
-import { useAuth } from "../../hooks/useAuth";
-
-// import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../store/user";
+import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false,
     });
     const [errors, setErrors] = useState({});
-    const [enterError, setEnterError] = useState(null);
-
-    const { logIn } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value,
         }));
-        setEnterError(null);
     };
 
     const validatorConfig = {
@@ -53,29 +51,22 @@ const LoginForm = () => {
 
     const validate = () => {
         const errors = validator(data, validatorConfig);
-        //  покажет все ошибки, а не первую попавшуюся
-        // validateScheme.validate(data,{abortEarly:false}).then(()=>).catch(()=>);
-        // validateScheme
-        //     .validate(data)
-        //     .then(() => setErrors({}))
-        //     .catch((err) => setErrors({ [err.path]: err.message }));
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
 
         console.log(data);
-        try {
-            await logIn(data);
-        } catch (error) {
-            setEnterError(error.message);
-        }
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
+        dispatch(logIn({ data, redirect }));
     };
 
     return (
@@ -98,7 +89,7 @@ const LoginForm = () => {
             <CheckboxField value={data.stayOn} onChange={handleChange} name="stayOn">
                 Оставаться в системе
             </CheckboxField>
-            {enterError && <p className="text-danger">{enterError}</p>}
+            {/* {enterError && <p className="text-danger">{enterError}</p>} */}
             <button
                 className="btn btn-primary w-100 mx-auto"
                 type="submit"

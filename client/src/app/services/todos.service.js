@@ -8,26 +8,30 @@ const todosService = {
         const { data } = await httpService.get(todosEndPoint, {
             params: { userId },
         });
-
         return data;
     },
 
     add: async (todo) => {
         console.log("add payload", todo);
         const { data } = await httpService.post(todosEndPoint + "add", todo);
-        console.log("todosService", data);
+        console.log("todosService add", data);
         return data;
     },
 
     important: async (id) => {
-        const { data } = await httpService.put(todosEndPoint + `important/${id}`, { id });
+        const { data } = await httpService.put(todosEndPoint + `important/${id}`, {
+            id,
+        });
         return data;
     },
 
     edit: async (payload) => {
-        console.log("payload", payload);
-        const { data } = await httpService.post(todosEndPoint + "add", payload);
-        console.log("todosService", data);
+        console.log("payload edit", payload);
+        const { data } = await httpService.patch(
+            todosEndPoint + `edit/${payload._id}`,
+            payload
+        );
+        console.log("todosService edit", data);
         return data;
     },
 

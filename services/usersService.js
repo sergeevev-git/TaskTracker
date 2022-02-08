@@ -10,7 +10,7 @@ exports.createUser = async (username, email, password) => {
 
     await newUser.save();
 
-    return newUser.id;
+    return newUser;
 };
 
 exports.findUserById = async (id) => {

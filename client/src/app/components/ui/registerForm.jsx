@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
-import { useAuth } from "../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { registration } from "../../store/user";
 
 const RegisterForm = () => {
+    const dispatch = useDispatch();
     const [data, setData] = useState({
         username: "",
         email: "",
@@ -11,8 +13,6 @@ const RegisterForm = () => {
         confirmPassword: "",
     });
     const [errors, setErrors] = useState({});
-
-    const { registration } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -68,16 +68,11 @@ const RegisterForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        try {
-            await registration(data);
-        } catch (error) {
-            console.log("registration error", error);
-            setErrors(error);
-        }
+        dispatch(registration(data));
     };
 
     return (
@@ -112,12 +107,11 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 error={errors.confirmPassword}
             />
-            {/* {enterError && <p className="text-danger">{enterError}</p>} */}
+
             <button
                 className="btn btn-primary w-100 mx-auto mt-4"
                 type="submit"
                 disabled={!isValid}
-                // disabled={!isValid || enterError}
             >
                 Submit
             </button>

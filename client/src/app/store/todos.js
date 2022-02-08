@@ -1,5 +1,8 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import todosService from "../services/todos.service";
+import history from "../utils/history";
+import { clearErrors, setErrors } from "./errors";
+import { loadCurrentUserData } from "./user";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -23,18 +26,16 @@ const todosSlice = createSlice({
             { title: "in progress", tasks: null },
             { title: "finished", tasks: null },
         ],
-        isLoading: true,
-        // error: null,
-        // enterError: null,
+        isLoading: false,
+        error: null,
     },
     reducers: {
         todosRequested: (state) => {
             state.isLoading = true;
+            state.error = null;
         },
         todosRecieved: (state, action) => {
-            console.log(action.payload);
             state.entities = action.payload;
-            state.isLoading = false;
         },
         updateBoardsSuccess: (state) => {
             state.boards[1].tasks = state.entities.filter(
@@ -46,6 +47,7 @@ const todosSlice = createSlice({
             state.boards[3].tasks = state.entities.filter(
                 (todo) => todo.status === "completed"
             );
+            state.isLoading = false;
         },
         todosRequestFailed: (state, action) => {
             state.error = action.payload;
@@ -53,6 +55,12 @@ const todosSlice = createSlice({
         },
         addTodoSuccess(state, action) {
             state.entities.push(action.payload);
+        },
+        addTodoFailed: (state, action) => {
+            state.error = action.payload;
+        },
+        updateTodoRequested(state) {
+            state.error = null;
         },
         updateTodoSuccess(state, action) {
             const elementIndex = state.entities.findIndex(
@@ -63,8 +71,26 @@ const todosSlice = createSlice({
                 ...action.payload,
             };
         },
+        updateTodoFailed: (state, action) => {
+            state.error = action.payload;
+        },
+        deleteTodoRequested(state) {
+            state.error = null;
+        },
         deleteTodoSuccess(state, action) {
             state.entities = state.entities.filter((todo) => todo._id !== action.payload);
+        },
+        deleteTodoFailed: (state, action) => {
+            state.error = action.payload;
+        },
+        todosCleared(state) {
+            state.entities = null;
+            state.boards = [
+                { title: "add task", tasks: null },
+                { title: "new tasks", tasks: null },
+                { title: "in progress", tasks: null },
+                { title: "finished", tasks: null },
+            ];
         },
     },
 });
@@ -76,18 +102,18 @@ const {
     updateBoardsSuccess,
     todosRequestFailed,
     addTodoSuccess,
+    addTodoFailed,
+    updateTodoRequested,
     updateTodoSuccess,
+    updateTodoFailed,
+    deleteTodoRequested,
     deleteTodoSuccess,
+    deleteTodoFailed,
+    todosCleared,
 } = actions;
 
 const addTodoRequested = createAction("todos/addTodoRequested");
-const addTodoFailed = createAction("todos/addTodoFailed");
-
-const updateTodoRequested = createAction("todos/updateTodoRequested");
-const updateTodoFailed = createAction("todos/updateTodoFailed");
-
-const deleteTodoRequested = createAction("todos/deleteTodoRequested");
-const deleteTodoFailed = createAction("todos/deleteTodoFailed");
+// const addTodoFailed = createAction("todos/addTodoFailed");
 
 export const loadTodosList = (userId) => async (dispatch) => {
     dispatch(todosRequested());
@@ -96,19 +122,30 @@ export const loadTodosList = (userId) => async (dispatch) => {
         dispatch(todosRecieved(todos));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(todosRequestFailed(error.message));
+        const { status, statusText } = error.response;
+        if (status === 404) {
+            history.push("/404");
+            dispatch(todosRequestFailed(statusText));
+        } else dispatch(todosRequestFailed(error.message));
+    } finally {
+        dispatch(loadCurrentUserData());
     }
 };
 
 export const addTodo = (payload) => async (dispatch) => {
     dispatch(addTodoRequested());
+    dispatch(clearErrors());
     try {
         const { todo } = await todosService.add(payload);
         console.log("addTodo data", todo);
         dispatch(addTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(addTodoFailed(error.message));
+        const { errors, message } = error.response.data;
+        if (errors) {
+            dispatch(setErrors(errors));
+            dispatch(addTodoFailed(message));
+        } else dispatch(addTodoFailed(error.message));
     }
 };
 
@@ -120,19 +157,29 @@ export const importantTodo = (todoId) => async (dispatch) => {
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(updateTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(updateTodoFailed(statusText));
+        } else {
+            dispatch(updateTodoFailed(error.message));
+        }
     }
 };
 
-export const editTodo = (todoId) => async (dispatch) => {
+export const editTodo = (payload) => async (dispatch) => {
     dispatch(updateTodoRequested());
     try {
-        const { todo } = await todosService.edit(todoId);
+        const { todo } = await todosService.edit(payload);
         console.log("editTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(updateTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(updateTodoFailed(statusText));
+        } else {
+            dispatch(updateTodoFailed(error.message));
+        }
     }
 };
 
@@ -144,7 +191,12 @@ export const newTodo = (todoId) => async (dispatch) => {
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(updateTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(updateTodoFailed(statusText));
+        } else {
+            dispatch(updateTodoFailed(error.message));
+        }
     }
 };
 
@@ -156,7 +208,12 @@ export const inWorkTodo = (todoId, drop) => async (dispatch) => {
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(updateTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(updateTodoFailed(statusText));
+        } else {
+            dispatch(updateTodoFailed(error.message));
+        }
     }
 };
 
@@ -168,7 +225,12 @@ export const completeTodo = (todoId, drop) => async (dispatch) => {
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(updateTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(updateTodoFailed(statusText));
+        } else {
+            dispatch(updateTodoFailed(error.message));
+        }
     }
 };
 
@@ -180,11 +242,22 @@ export const deleteTodo = (todoId) => async (dispatch) => {
         dispatch(deleteTodoSuccess(todoId));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        dispatch(deleteTodoFailed(error.message));
+        const { statusText } = error.response;
+        if (statusText) {
+            dispatch(deleteTodoFailed(statusText));
+        } else {
+            dispatch(deleteTodoFailed(error.message));
+        }
     }
+};
+
+export const clearTodosStore = () => (dispatch) => {
+    dispatch(todosCleared());
 };
 
 export const getTodos = () => (state) => state.todos.entities;
 export const getBoadrs = () => (state) => state.todos.boards;
+export const getTodosLoadingStatus = () => (state) => state.todos.isLoading;
+export const getTodosError = () => (state) => state.todos.error;
 
 export default todosReducer;

@@ -1,6 +1,5 @@
 import React from "react";
 import TodoCard from "./todoCard";
-import Loader from "../../common/loader";
 
 const TodoList = ({ board, ...props }) => {
     // console.log(props);

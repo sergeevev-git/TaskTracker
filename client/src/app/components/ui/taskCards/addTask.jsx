@@ -3,21 +3,30 @@ import TextField from "../../common/form/textField";
 import TextAreaField from "../../common/form/textAreaField";
 import { validator } from "../../../utils/validator";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../../store/todos";
+import { useSelector } from "react-redux";
+import { getCurrentUserId } from "../../../store/user";
+import { getErrors, getIsErrorsStatus } from "../../../store/errors";
 
 const AddTask = () => {
     const dispatch = useDispatch();
-    const { currentUser } = useAuth();
+    const currentUserId = useSelector(getCurrentUserId());
     const [data, setData] = useState({
-        user: currentUser.id,
+        user: currentUserId,
         title: "",
         text: "",
         deadline: "",
     });
     const [errors, setErrors] = useState({});
-    const [enterError, setEnterError] = useState(null);
+    const enterErrors = useSelector(getErrors());
+    // const isEnterErrors = useSelector(getIsErrorsStatus());
+
+    useEffect(() => {
+        if (enterErrors) {
+            enterErrors.map((error) => toast.error(error.msg));
+        }
+    }, [enterErrors]);
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -51,10 +60,9 @@ const AddTask = () => {
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
+        console.log(errors);
         return Object.keys(errors).length === 0;
     };
-
-    const isValid = Object.keys(errors).length === 0;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -65,19 +73,13 @@ const AddTask = () => {
             }
             return;
         }
-        try {
-            console.log("handleSubmit", data);
-            // await addTodo(data);
-            dispatch(addTodo(data));
-            setData((prevState) => ({
-                ...prevState,
-                title: "",
-                text: "",
-                deadline: "",
-            }));
-        } catch (error) {
-            setEnterError(error.message);
-        }
+        dispatch(addTodo(data));
+        setData((prevState) => ({
+            ...prevState,
+            title: "",
+            text: "",
+            deadline: "",
+        }));
     };
 
     return (
@@ -85,18 +87,15 @@ const AddTask = () => {
             <form className="mt-1 mb-30" onSubmit={handleSubmit}>
                 <div className="div-title">
                     <TextField
-                        // label="title"
                         name="title"
                         value={data.title}
                         classLabel="text-white mb-0"
                         placeholder="task title"
                         onChange={handleChange}
-                        // error={errors.name}
                     />
                 </div>
                 <div className="div-text-area">
                     <TextAreaField
-                        // label="text"
                         name="text"
                         value={data.text}
                         classLabel="text-white mb-0"
@@ -105,28 +104,22 @@ const AddTask = () => {
                         maxLength="300"
                         placeholder="task description"
                         onChange={handleChange}
-                        // error={errors.description}
                     />
                 </div>
 
                 <div className="row d-flex justify-content-between control">
                     <div className="col-auto div-deadline">
                         <TextField
-                            // label="deadline"
                             name="deadline"
                             type="date"
                             value={data.deadline}
                             classLabel="text-white mb-0"
                             onChange={handleChange}
-                            // error={errors.deadline}
                         />
                     </div>
 
                     <div className="col d-flex justify-content-end div-btn-add">
-                        <button
-                            className="btn btn-primary btn-add"
-                            // disabled={!isValid || enterError}
-                        >
+                        <button className="btn btn-primary btn-add">
                             <i className="bi bi-plus-square"></i>
                         </button>
                     </div>

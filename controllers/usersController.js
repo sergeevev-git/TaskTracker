@@ -8,7 +8,7 @@ getCurrentUser = async (req, res) => {
         // console.log("user", user);
         return res.status(201).json({
             username: user.username,
-            id: user._id,
+            userId: user._id,
         });
     } catch (error) {
         console.log("userController error/getCurrentUser - ", error);

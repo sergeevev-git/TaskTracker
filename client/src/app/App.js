@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import "./App.scss";
+
+import AppLoader from "./components/ui/hoc/appLoader";
 
 import ProtectedRoute from "./components/common/protectedRoute";
 import Header from "./components/ui/header";
@@ -11,20 +13,12 @@ import Login from "./layouts/login";
 import Todos from "./layouts/todos";
 import Main from "./layouts/main";
 import LogOut from "./layouts/logout";
-
-import AuthProvider from "./hooks/useAuth";
-import { useDispatch } from "react-redux";
-import { loadTodosList } from "./store/todos";
+import NotFound from "./layouts/404";
 
 const App = () => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(loadTodosList("61aae4a46d441b545b7e1878"));
-    }, []);
-
     return (
         <div>
-            <AuthProvider>
+            <AppLoader>
                 <Header />
 
                 <Switch>
@@ -32,15 +26,14 @@ const App = () => {
 
                     <Route path="/login" component={Login} />
                     <Route path="/logout" component={LogOut} />
+                    <Route path="/404" component={NotFound} />
                     <Route path="/" exact component={Main} />
                     <Redirect to="/" />
                 </Switch>
 
-                {/* <TodosProvider>{routes}</TodosProvider> */}
-
                 <Footer />
-            </AuthProvider>
-            <ToastContainer />
+            </AppLoader>
+            <ToastContainer position="bottom-right" autoClose={3000} transition={Zoom} />
         </div>
     );
 };
