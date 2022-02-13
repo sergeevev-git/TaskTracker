@@ -4,6 +4,7 @@ import Board from "../components/ui/taskCards/board";
 import { useDispatch, useSelector } from "react-redux";
 import { getTodos, getBoadrs, newTodo, inWorkTodo, completeTodo } from "../store/todos";
 import { getTodosError } from "../store/todos";
+import EditTodo from "../components/ui/taskCards/editTodo";
 
 const Todos = () => {
     const dispatch = useDispatch();
@@ -12,9 +13,9 @@ const Todos = () => {
     const todosError = useSelector(getTodosError());
 
     const [currentBoard, setCurrentBoard] = useState(null);
-    const [currentTask, setCurrentTask] = useState(null);
-    const [statistic, setStatistic] = useState([]);
-    const [editableTask, setEditableTask] = useState({});
+    const [currentTodo, setCurrentTodo] = useState(null);
+    // const [statistic, setStatistic] = useState([]);
+    // const [editableTodo, setEditableTodo] = useState({});
 
     useEffect(() => {
         console.log(todosError);
@@ -56,34 +57,35 @@ const Todos = () => {
         e.target.closest(".col-12").classList.remove("opacity");
     };
 
-    const handleDragStart = (e, board, task) => {
+    const handleDragStart = (e, board, todo) => {
         // setCurrentBoard(board);
-        setCurrentTask(task);
+        setCurrentTodo(todo);
     };
 
     const handleDragEnd = (e, board) => {
         e.target.closest(".col-12").classList.remove("opacity");
     };
 
-    const handleDrop = (e, board, task) => {
+    const handleDrop = (e, board, todo) => {
         e.preventDefault();
 
         e.target.closest(".col-12").classList.remove("opacity");
 
         console.log("drop board", board);
-        console.log("drop task", task);
+        console.log("drop task", todo);
 
         board.title === "in progress"
-            ? dispatch(inWorkTodo(task, true))
+            ? dispatch(inWorkTodo(todo, true))
             : board.title === "finished"
-            ? dispatch(completeTodo(task, true))
-            : dispatch(newTodo(task));
+            ? dispatch(completeTodo(todo, true))
+            : dispatch(newTodo(todo));
     };
 
-    const handleEditTask = (id) => {
-        const [task] = todos.filter((todo) => todo._id === id);
-        setEditableTask(task);
-    };
+    // const handleEditTodo = (id) => {
+    //     const [todo] = todos.filter((todo) => todo._id === id);
+    //     console.log(todo);
+    //     setEditableTodo(todo);
+    // };
 
     // async function getAllUsers() {
     //     try {
@@ -111,56 +113,21 @@ const Todos = () => {
                             <Board
                                 key={board.id}
                                 board={board}
-                                statistic={statistic}
-                                currentTask={currentTask}
+                                // statistic={statistic}
+                                currentTodo={currentTodo}
                                 onDragOver={handleDragOver}
                                 onDragLeave={handleDragLeave}
                                 onDragStart={handleDragStart}
                                 onDragEnd={handleDragEnd}
                                 onDrop={handleDrop}
-                                handleEditTask={handleEditTask}
+                                // handleEditTodo={handleEditTodo}
                             />
                         );
                     })}
                 </div>
             </div>
 
-            <div
-                className="modal fade"
-                id="editTaskModal"
-                tabIndex="-1"
-                aria-labelledby="editTaskModal"
-                aria-hidden="true"
-            >
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="editTaskModal">
-                                {editableTask.title}
-                            </h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        <div className="modal-body">{editableTask.text}</div>
-                        <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                            <button type="button" className="btn btn-primary">
-                                Save changes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <EditTodo />
         </main>
     );
 };

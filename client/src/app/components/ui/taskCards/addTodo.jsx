@@ -7,9 +7,10 @@ import { useDispatch } from "react-redux";
 import { addTodo } from "../../../store/todos";
 import { useSelector } from "react-redux";
 import { getCurrentUserId } from "../../../store/user";
-import { getErrors, getIsErrorsStatus } from "../../../store/errors";
+import { getErrors } from "../../../store/errors";
+import deadlineConvert from "../../../utils/deadlineConvert";
 
-const AddTask = () => {
+const AddTodo = () => {
     const dispatch = useDispatch();
     const currentUserId = useSelector(getCurrentUserId());
     const [data, setData] = useState({
@@ -20,7 +21,6 @@ const AddTask = () => {
     });
     const [errors, setErrors] = useState({});
     const enterErrors = useSelector(getErrors());
-    // const isEnterErrors = useSelector(getIsErrorsStatus());
 
     useEffect(() => {
         if (enterErrors) {
@@ -60,7 +60,6 @@ const AddTask = () => {
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
-        console.log(errors);
         return Object.keys(errors).length === 0;
     };
 
@@ -73,7 +72,7 @@ const AddTask = () => {
             }
             return;
         }
-        dispatch(addTodo(data));
+        dispatch(addTodo({ ...data, deadline: deadlineConvert.toMs(data.deadline) }));
         setData((prevState) => ({
             ...prevState,
             title: "",
@@ -107,26 +106,28 @@ const AddTask = () => {
                     />
                 </div>
 
-                <div className="row d-flex justify-content-between control">
+                <div className="row d-flex justify-content-end control">
                     <div className="col-auto div-deadline">
                         <TextField
                             name="deadline"
-                            type="date"
+                            type="datetime-local"
                             value={data.deadline}
-                            classLabel="text-white mb-0"
+                            classLabel="text-white mb-0 input-w"
                             onChange={handleChange}
                         />
                     </div>
 
+                    {/* <div className="row d-flex justify-content-end control"> */}
                     <div className="col d-flex justify-content-end div-btn-add">
-                        <button className="btn btn-primary btn-add">
+                        <button className="btn btn-primary w-100 btn-add">
                             <i className="bi bi-plus-square"></i>
                         </button>
                     </div>
                 </div>
+                {/* </div> */}
             </form>
         </div>
     );
 };
 
-export default AddTask;
+export default AddTodo;

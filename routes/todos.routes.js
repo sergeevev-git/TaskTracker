@@ -12,7 +12,7 @@ router.post("/add", verifyTodo.add, todosController.addTodo);
 
 router.put("/important/:id", todosController.importantTodo);
 
-// router.editTodo("/", todosController.getAll);
+router.patch("/edit/:id", verifyTodo.add, todosController.editTodo);
 
 router.put("/new/:id", todosController.newTodo);
 

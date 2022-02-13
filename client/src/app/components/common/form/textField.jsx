@@ -41,6 +41,7 @@ const TextField = ({
                     placeholder={placeholder}
                     onChange={handleChange}
                     className={getInputClasses()}
+                    required
                 />
                 {(type === "password" || type === "confirmPassword") && (
                     <button
@@ -48,9 +49,7 @@ const TextField = ({
                         type="button"
                         onClick={toggleShowPsw}
                     >
-                        <i
-                            className={"bi bi-eye" + (showPsw ? "-slash" : "")}
-                        ></i>
+                        <i className={"bi bi-eye" + (showPsw ? "-slash" : "")}></i>
                     </button>
                 )}
                 {error && <div className="invalid-feedback">{error}</div>}

@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Todo = require("../models/todo");
 
 exports.addTodo = async (user, title, text, deadline) => {
@@ -10,6 +11,7 @@ exports.addTodo = async (user, title, text, deadline) => {
     });
 
     await todo.save();
+    // console.log("todo: ", todo);
 
     return todo;
 };
@@ -27,7 +29,33 @@ exports.importantTodo = async (id) => {
     }
 };
 
-exports.editTodo = async () => {};
+exports.editTodo = async (_id, title, text, deadline) => {
+    // console.log("_id, title, text, deadline: ", _id, title, text, deadline);
+    try {
+        const todo = await Todo.findOneAndUpdate(
+            { _id: _id },
+            { title: title, text: text, deadline: deadline }
+            // { useFindAndModify: false },
+            // (error) => {
+            //     if (error) {
+            //         return response
+            //             .status(404)
+            //             .json({ message: `Todo with id:${_id} not found` });
+            //     } else {
+            //         return response
+            //             .status(202)
+            //             .json({ message: "Update todo successfull" });
+            //     }
+            // }
+        );
+
+        const updatedTodo = await Todo.findOne({ _id: _id });
+
+        return updatedTodo;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 exports.newTodo = async (id) => {
     console.log("todoService newTodo", id);

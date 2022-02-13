@@ -26,7 +26,15 @@ const todosSlice = createSlice({
             { title: "in progress", tasks: null },
             { title: "finished", tasks: null },
         ],
+        statistic: [
+            { title: "total task", count: 0 },
+            { title: "new", count: 0 },
+            { title: "in progress", count: 0 },
+            { title: "finished", count: 0 },
+        ],
         isLoading: false,
+        editTodoId: null,
+        isEditTodo: false,
         error: null,
     },
     reducers: {
@@ -49,6 +57,13 @@ const todosSlice = createSlice({
             );
             state.isLoading = false;
         },
+        updateStatistic: (state) => {
+            state.statistic[0].count = state.entities.length;
+            state.statistic[1].count = state.boards[1].tasks.length;
+            state.statistic[2].count = state.boards[2].tasks.length;
+            state.statistic[3].count = state.boards[3].tasks.length;
+            state.isLoading = false;
+        },
         todosRequestFailed: (state, action) => {
             state.error = action.payload;
             state.isLoading = false;
@@ -58,6 +73,10 @@ const todosSlice = createSlice({
         },
         addTodoFailed: (state, action) => {
             state.error = action.payload;
+        },
+        editTodoSet: (state, action) => {
+            state.editTodoId = action.payload;
+            state.isEditTodo = true;
         },
         updateTodoRequested(state) {
             state.error = null;
@@ -91,6 +110,12 @@ const todosSlice = createSlice({
                 { title: "in progress", tasks: null },
                 { title: "finished", tasks: null },
             ];
+            state.statistic = [
+                { title: "total task", count: 0 },
+                { title: "new", count: 0 },
+                { title: "in progress", count: 0 },
+                { title: "finished", count: 0 },
+            ];
         },
     },
 });
@@ -100,9 +125,11 @@ const {
     todosRequested,
     todosRecieved,
     updateBoardsSuccess,
+    updateStatistic,
     todosRequestFailed,
     addTodoSuccess,
     addTodoFailed,
+    editTodoSet,
     updateTodoRequested,
     updateTodoSuccess,
     updateTodoFailed,
@@ -120,7 +147,10 @@ export const loadTodosList = (userId) => async (dispatch) => {
     try {
         const { todos } = await todosService.fetchAll(userId);
         dispatch(todosRecieved(todos));
+        console.log("test1");
         dispatch(updateBoardsSuccess());
+        console.log("test2");
+        dispatch(updateStatistic());
     } catch (error) {
         const { status, statusText } = error.response;
         if (status === 404) {
@@ -140,6 +170,7 @@ export const addTodo = (payload) => async (dispatch) => {
         console.log("addTodo data", todo);
         dispatch(addTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
+        dispatch(updateStatistic());
     } catch (error) {
         const { errors, message } = error.response.data;
         if (errors) {
@@ -166,17 +197,23 @@ export const importantTodo = (todoId) => async (dispatch) => {
     }
 };
 
+export const setEditTodoId = (todoId) => (dispatch) => {
+    dispatch(editTodoSet(todoId));
+};
+
 export const editTodo = (payload) => async (dispatch) => {
     dispatch(updateTodoRequested());
+    dispatch(clearErrors());
     try {
         const { todo } = await todosService.edit(payload);
         console.log("editTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
-        const { statusText } = error.response;
-        if (statusText) {
-            dispatch(updateTodoFailed(statusText));
+        const { errors, message } = error.response.data;
+        if (errors) {
+            dispatch(setErrors(errors));
+            dispatch(updateTodoFailed(message));
         } else {
             dispatch(updateTodoFailed(error.message));
         }
@@ -190,6 +227,7 @@ export const newTodo = (todoId) => async (dispatch) => {
         console.log("newTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
+        dispatch(updateStatistic());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -207,6 +245,7 @@ export const inWorkTodo = (todoId, drop) => async (dispatch) => {
         console.log("inWorkTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
+        dispatch(updateStatistic());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -224,6 +263,7 @@ export const completeTodo = (todoId, drop) => async (dispatch) => {
         console.log("completeTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
+        dispatch(updateStatistic());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -241,6 +281,7 @@ export const deleteTodo = (todoId) => async (dispatch) => {
         console.log("deleteTodo data", todo);
         dispatch(deleteTodoSuccess(todoId));
         dispatch(updateBoardsSuccess());
+        dispatch(updateStatistic());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -256,8 +297,22 @@ export const clearTodosStore = () => (dispatch) => {
 };
 
 export const getTodos = () => (state) => state.todos.entities;
+export const getTodoById = (todoId) => (state) => {
+    if (state.todos.entities) {
+        return state.todos.entities.find((todo) => todo._id === todoId);
+    }
+};
+
 export const getBoadrs = () => (state) => state.todos.boards;
+
+export const getStatistic = () => (state) => state.todos.statistic;
+
 export const getTodosLoadingStatus = () => (state) => state.todos.isLoading;
+
+export const getEditTodoId = () => (state) => state.todos.editTodoId;
+
+export const getEditTodoStatus = () => (state) => state.todos.isEditTodo;
+
 export const getTodosError = () => (state) => state.todos.error;
 
 export default todosReducer;

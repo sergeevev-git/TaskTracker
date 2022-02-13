@@ -16,12 +16,7 @@ const AppLoader = ({ children }) => {
         }
     }, [isLoggedIn]);
 
-    if (todosStatusLoading)
-        return (
-            <>
-                <Background />
-            </>
-        );
+    if (todosStatusLoading) return <Background />;
 
     return children;
 };

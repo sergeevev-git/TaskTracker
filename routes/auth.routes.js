@@ -15,7 +15,11 @@ const verifyAuth = require("../middleware/auth/verifyAuth");
 const authController = require("../controllers/authController");
 const usersController = require("../controllers/usersController");
 
-router.post("/registration", verifySignUp.register, authController.registration);
+router.post(
+    "/registration",
+    verifySignUp.register,
+    authController.registration
+);
 
 router.post("/login", verifySignIn.login, authController.login);
 

@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import deadlineConvert from "../../../utils/deadlineConvert";
 import {
     importantTodo,
     inWorkTodo,
     completeTodo,
     deleteTodo,
+    setEditTodoId,
 } from "../../../store/todos";
 
 const TodoCard = ({
@@ -19,8 +21,7 @@ const TodoCard = ({
     ...props
 }) => {
     const dispatch = useDispatch();
-    const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop, handleEditTask } =
-        props;
+    const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop } = props;
     const ref = useRef(null);
 
     const checkCondition = (condition) => {
@@ -47,7 +48,7 @@ const TodoCard = ({
                 </div>
 
                 <div className="task-card-footer">
-                    <p>more 2 days ago</p>
+                    <div className="deadline">{deadlineConvert.toDateText(deadline)}</div>
                     <div className="buttons">
                         {status !== "completed" && (
                             <>
@@ -69,9 +70,9 @@ const TodoCard = ({
                                     data-placement="bottom"
                                     title="edit"
                                     role="button"
-                                    onClick={() => handleEditTask(id)}
+                                    onClick={() => dispatch(setEditTodoId(id))}
                                     data-bs-toggle="modal"
-                                    data-bs-target="#editTaskModal"
+                                    data-bs-target="#editTodoModal"
                                 ></i>
                                 <i
                                     className={
@@ -122,7 +123,7 @@ TodoCard.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     text: PropTypes.string,
-    deadline: PropTypes.string,
+    deadline: PropTypes.number,
     inwork: PropTypes.bool,
     important: PropTypes.bool,
     completed: PropTypes.bool,

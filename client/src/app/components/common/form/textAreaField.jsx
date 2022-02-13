@@ -40,6 +40,7 @@ const TextAreaField = ({
                     placeholder={placeholder}
                     onChange={handleChange}
                     className={getInputClasses()}
+                    required
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>

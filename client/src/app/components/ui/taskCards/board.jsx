@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
-import AddTask from "./addTask";
+import { useSelector } from "react-redux";
+import { getStatistic } from "../../../store/todos";
+import AddTask from "./addTodo";
 import Statistic from "./statistic";
 import TodoList from "./todoList";
 
@@ -11,8 +13,10 @@ const Board = ({ board, ...props }) => {
         finished: "finished",
     };
     const ref = useRef(null);
+    const statistic = useSelector(getStatistic());
+    // console.log("statistic: ", statistic);
 
-    const { onDragOver, onDragLeave, onDragEnd, onDrop, currentTask, statistic } = props;
+    const { onDragOver, onDragLeave, onDragEnd, onDrop, currentTodo } = props;
 
     return (
         <>
@@ -31,7 +35,11 @@ const Board = ({ board, ...props }) => {
                         <h4>statistic</h4>
                     </div>
                     <hr />
-                    <Statistic statistic={statistic} />
+                    <ul className="list-group list-group-flush statitics ">
+                        {statistic.map((stat) => {
+                            return <Statistic key={stat.title} {...stat} />;
+                        })}
+                    </ul>
                 </div>
             ) : (
                 board.tasks && (
@@ -44,7 +52,7 @@ const Board = ({ board, ...props }) => {
                         onDragLeave={(e) => onDragLeave(e, ref)}
                         onDragOver={(e) => onDragOver(e, ref)}
                         onDragEnd={(e) => onDragEnd(e, ref)}
-                        onDrop={(e) => onDrop(e, board, currentTask)}
+                        onDrop={(e) => onDrop(e, board, currentTodo)}
                     >
                         <div className="coloumn-header">
                             <h4>{board.title}</h4>

@@ -4,16 +4,17 @@
     "description": "mern tasktracker finalproject",
     "main": "app.js",
     "scripts": {
-        "server": "nodemon app.js",
+        "server": "cross-env NODE_ENV=development nodemon app.js",
         "client": "npm run start --prefix client",
-        "dev": "concurrently \"nodemon index.js\" \"npm run start --prefix client\""
+        "start": "cross-env NODE_ENV=production node app.js",
+        "dev": "concurrently \"cross-env NODE_ENV=development nodemon app.js\" \"npm run start --prefix client\""
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@reduxjs/toolkit": "^1.7.1",
         "axios": "^0.24.0",
         "bcryptjs": "^2.4.3",
+        "chalk": "^4.1.2",
         "concurrently": "^6.3.0",
         "config": "^3.3.6",
         "cookie-parser": "^1.4.6",
@@ -23,7 +24,10 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.0.12",
         "node-sass": "^6.0.1",
-        "nodemon": "^2.0.14",
         "react-redux": "^7.2.6"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "nodemon": "^2.0.15"
     }
 }

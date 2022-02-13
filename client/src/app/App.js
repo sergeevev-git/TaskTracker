@@ -33,7 +33,12 @@ const App = () => {
 
                 <Footer />
             </AppLoader>
-            <ToastContainer position="bottom-right" autoClose={3000} transition={Zoom} />
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                transition={Zoom}
+                pauseOnFocusLoss={false}
+            />
         </div>
     );
 };

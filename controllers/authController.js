@@ -4,6 +4,8 @@ const Token = require("../models/token");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const chalk = require("chalk");
+
 const tokensService = require("../services/tokensService");
 const usersService = require("../services/usersService");
 
@@ -11,7 +13,11 @@ registration = async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 12);
-        const { id } = await usersService.createUser(username, email, hashedPassword);
+        const { id } = await usersService.createUser(
+            username,
+            email,
+            hashedPassword
+        );
 
         tokens = await tokensService.generateTokens(id, email, username);
 
@@ -22,6 +28,9 @@ registration = async (req, res) => {
             httpOnly: true,
         });
 
+        console.log(
+            chalk.bgWhite.inverse(`New user: ${username} - email: ${email}`)
+        );
         return res.status(201).json({
             accessToken: tokens.accessToken,
             userId: id,

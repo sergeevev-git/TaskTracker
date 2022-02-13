@@ -1,4 +1,7 @@
 const User = require("../models/user");
+
+const chalk = require("chalk");
+
 const usersService = require("../services/usersService");
 
 getCurrentUser = async (req, res) => {
