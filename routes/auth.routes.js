@@ -17,7 +17,7 @@ const usersController = require("../controllers/usersController");
 
 router.post(
     "/registration",
-    verifySignUp.register,
+    verifySignUp.registration,
     authController.registration
 );
 

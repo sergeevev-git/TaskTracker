@@ -1,11 +1,6 @@
-const User = require("../models/user");
-const Token = require("../models/token");
-
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require("config");
 const chalk = require("chalk");
-
+const User = require("../models/user");
 const tokensService = require("../services/tokensService");
 const usersService = require("../services/usersService");
 
@@ -37,7 +32,10 @@ registration = async (req, res) => {
             message: "User has been created",
         });
     } catch (error) {
-        console.log("authController error/registration - ", error);
+        console.log(
+            chalk.bgRed.inverse("authController error/registration - ", error)
+        );
+        res.status(500).json({ message: "server error" });
     }
 };
 
@@ -60,7 +58,10 @@ login = async (req, res) => {
             message: "login successful",
         });
     } catch (error) {
-        console.log("authController error/login - ", error);
+        console.log(
+            chalk.bgRed.inverse("authController error/login - ", error)
+        );
+        res.status(500).json({ message: "server error" });
     }
 };
 
@@ -74,7 +75,10 @@ logout = async (req, res) => {
 
         return res.status(200).json({ message: "logout successful" });
     } catch (error) {
-        console.log("authController error/logout - ", error);
+        console.log(
+            chalk.bgRed.inverse("authController error/logout - ", error)
+        );
+        res.status(500).json({ message: "server error" });
     }
 };
 
@@ -98,7 +102,10 @@ refresh = async (req, res) => {
             message: "refresh/re-login successful",
         });
     } catch (error) {
-        console.log("authController error/refresh - ", error);
+        console.log(
+            chalk.bgRed.inverse("authController error/refresh - ", error)
+        );
+        res.status(500).json({ message: "server error" });
     }
 };
 

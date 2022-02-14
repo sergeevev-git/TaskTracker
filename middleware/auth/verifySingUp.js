@@ -1,7 +1,7 @@
 const User = require("../../models/user");
 const { check, validationResult } = require("express-validator");
 
-register = [
+registration = [
     check("username")
         .not()
         .isEmpty()
@@ -48,7 +48,7 @@ register = [
 ];
 
 const verifySignUp = {
-    register,
+    registration,
 };
 
 module.exports = verifySignUp;
