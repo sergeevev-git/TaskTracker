@@ -1,5 +1,10 @@
-const { response } = require("express");
 const Todo = require("../models/todo");
+
+exports.fetchAll = async (userId) => {
+    const todos = await Todo.find({ user: userId });
+
+    return todos;
+};
 
 exports.addTodo = async (user, title, text, deadline) => {
     const todo = await new Todo({
@@ -11,117 +16,127 @@ exports.addTodo = async (user, title, text, deadline) => {
     });
 
     await todo.save();
-    // console.log("todo: ", todo);
 
     return todo;
 };
 
-exports.importantTodo = async (id) => {
+exports.importantTodo = async (id, userId) => {
     try {
-        const todo = await Todo.findOne({ _id: id });
-        todo.important = !todo.important;
+        const todo = await Todo.findById(id);
 
-        await todo.save();
+        if (todo.user.toString() === userId) {
+            todo.important = !todo.important;
 
-        return todo;
+            await todo.save();
+
+            return todo;
+        } else {
+            return null;
+        }
     } catch (error) {
         console.log(error);
     }
 };
 
 exports.editTodo = async (_id, title, text, deadline) => {
-    // console.log("_id, title, text, deadline: ", _id, title, text, deadline);
     try {
         const todo = await Todo.findOneAndUpdate(
             { _id: _id },
-            { title: title, text: text, deadline: deadline }
-            // { useFindAndModify: false },
-            // (error) => {
-            //     if (error) {
-            //         return response
-            //             .status(404)
-            //             .json({ message: `Todo with id:${_id} not found` });
-            //     } else {
-            //         return response
-            //             .status(202)
-            //             .json({ message: "Update todo successfull" });
-            //     }
-            // }
+            { title: title, text: text, deadline: deadline },
+            { new: true }
         );
 
-        const updatedTodo = await Todo.findOne({ _id: _id });
-
-        return updatedTodo;
+        return todo;
     } catch (error) {
         console.log(error);
     }
 };
 
-exports.newTodo = async (id) => {
+exports.newTodo = async (id, userId) => {
     console.log("todoService newTodo", id);
     try {
-        const todo = await Todo.findOne({ _id: id });
-        if (todo.status !== "new") {
-            todo.status = "new";
-        }
-        await todo.save();
+        const todo = await Todo.findById(id);
 
-        return todo;
+        if (todo.user.toString() === userId) {
+            if (todo.status !== "new") {
+                todo.status = "new";
+            }
+            await todo.save();
+
+            return todo;
+        } else {
+            return null;
+        }
     } catch (error) {
         console.log(error);
     }
 };
 
-exports.inWorkTodo = async (id, drop) => {
+exports.inWorkTodo = async (id, drop, userId) => {
     console.log("todoService inWorkTodo", id);
     try {
-        const todo = await Todo.findOne({ _id: id });
-        if (drop) {
-            todo.status = "inWork";
-        } else {
-            if (todo.status !== "inWork") {
+        const todo = await Todo.findById(id);
+
+        if (todo.user.toString() === userId) {
+            if (drop) {
                 todo.status = "inWork";
             } else {
-                todo.status = "new";
+                if (todo.status !== "inWork") {
+                    todo.status = "inWork";
+                } else {
+                    todo.status = "new";
+                }
             }
+
+            await todo.save();
+
+            return todo;
+        } else {
+            return null;
         }
-
-        await todo.save();
-
-        return todo;
     } catch (error) {
         console.log(error);
     }
 };
 
-exports.completeTodo = async (id, drop) => {
+exports.completeTodo = async (id, drop, userId) => {
     console.log("todoService completeTodo", id);
     try {
-        const todo = await Todo.findOne({ _id: id });
-        if (drop) {
-            todo.status = "completed";
-        } else {
-            if (todo.status !== "completed") {
+        const todo = await Todo.findById(id);
+
+        if (todo.user.toString() === userId) {
+            if (drop) {
                 todo.status = "completed";
             } else {
-                todo.status = "new";
+                if (todo.status !== "completed") {
+                    todo.status = "completed";
+                } else {
+                    todo.status = "new";
+                }
             }
+
+            await todo.save();
+
+            return todo;
+        } else {
+            return null;
         }
-
-        await todo.save();
-
-        return todo;
     } catch (error) {
         console.log(error);
     }
 };
 
-exports.deleteTodo = async (id) => {
-    console.log(id);
+exports.deleteTodo = async (id, userId) => {
+    console.log("todoService deleteTodo", id);
     try {
-        const todo = await Todo.findOneAndDelete({ _id: id });
+        // const todo = await Todo.findOneAndDelete({ _id: id });
+        const todo = await Todo.findById(id);
 
-        return todo;
+        if (todo.user.toString() === userId) {
+            return todo;
+        } else {
+            return null;
+        }
     } catch (error) {
         console.log(error);
     }

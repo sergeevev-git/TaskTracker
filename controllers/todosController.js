@@ -1,17 +1,27 @@
-const Todo = require("../models/todo");
-
+// const Todo = require("../models/todo");
 const chalk = require("chalk");
-
 const todosService = require("../services/todosService");
+
+// ни в одном запросе мы не сравниваем с req.user = data из verifyAuth
+// потому что тудушки мы получаем только для текущего пользователя
+// и все действия производятся только для тудушек текущего, а про остальные
+// тудушки пользователь не знает
 
 getAll = async (req, res) => {
     try {
         const { userId } = req.query;
-        const todos = await Todo.find({ user: userId });
 
-        return res.status(201).json({ todos });
+        if (userId === req.user.userId) {
+            const todos = await todosService.fetchAll(userId);
+
+            return res.status(201).json({ todos });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/getAll - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/getAll - ", error)
+        );
         return res.status(404).json({ message: "Todos not found" });
     }
 };
@@ -20,14 +30,25 @@ addTodo = async (req, res) => {
     try {
         const { user, title, text, deadline } = req.body;
 
-        const todo = await todosService.addTodo(user, title, text, deadline);
+        if (user === req.user.userId) {
+            const todo = await todosService.addTodo(
+                user,
+                title,
+                text,
+                deadline
+            );
 
-        return res.status(201).json({
-            todo,
-            message: "Todo has been added",
-        });
+            return res.status(201).json({
+                todo,
+                message: "Todo has been added",
+            });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/addTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/addTodo - ", error)
+        );
         return res.status(404).json({ message: "Add todo error" });
     }
 };
@@ -36,23 +57,41 @@ importantTodo = async (req, res) => {
     try {
         const { id } = req.body;
 
-        const todo = await todosService.importantTodo(id);
+        const todo = await todosService.importantTodo(id, req.user.userId);
 
-        return res.status(202).json({ todo });
+        if (todo) {
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/importantTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/importantTodo - ", error)
+        );
         return res.status(404).json({ message: "Important todo error" });
     }
 };
 
 editTodo = async (req, res) => {
     try {
-        const { _id, title, text, deadline } = req.body;
-        const todo = await todosService.editTodo(_id, title, text, deadline);
+        const { user, _id, title, text, deadline } = req.body;
 
-        return res.status(202).json({ todo });
+        if (user === req.user.userId) {
+            const todo = await todosService.editTodo(
+                _id,
+                title,
+                text,
+                deadline
+            );
+
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/editTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/editTodo - ", error)
+        );
         return res.status(404).json({ message: "Edit todo error" });
     }
 };
@@ -61,12 +100,19 @@ newTodo = async (req, res) => {
     try {
         const { id } = req.body;
         console.log(id);
-        const todo = await todosService.newTodo(id);
+        const todo = await todosService.newTodo(id, req.user.userId);
 
         console.log("controller", todo);
-        return res.status(202).json({ todo });
+
+        if (todo) {
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/newTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/newTodo - ", error)
+        );
         return res.status(404).json({ message: "New todo error" });
     }
 };
@@ -74,12 +120,19 @@ newTodo = async (req, res) => {
 inWorkTodo = async (req, res) => {
     try {
         const { id, drop } = req.body;
-        const todo = await todosService.inWorkTodo(id, drop);
+        const todo = await todosService.inWorkTodo(id, drop, req.user.userId);
 
         console.log("controller", todo);
-        return res.status(202).json({ todo });
+
+        if (todo) {
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/inWorkTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/inWorkTodo - ", error)
+        );
         return res.status(404).json({ message: "In work todo error" });
     }
 };
@@ -87,12 +140,19 @@ inWorkTodo = async (req, res) => {
 completeTodo = async (req, res) => {
     try {
         const { id, drop } = req.body;
-        const todo = await todosService.completeTodo(id, drop);
+        const todo = await todosService.completeTodo(id, drop, req.user.userId);
 
         console.log("controller", todo);
-        return res.status(202).json({ todo });
+
+        if (todo) {
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/completeTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/completeTodo - ", error)
+        );
         return res.status(404).json({ message: "Complete todo error" });
     }
 };
@@ -100,11 +160,17 @@ completeTodo = async (req, res) => {
 deleteTodo = async (req, res) => {
     try {
         const { id } = req.params;
-        const todo = await todosService.deleteTodo(id);
+        const todo = await todosService.deleteTodo(id, req.user.userId);
 
-        return res.status(202).json({ todo });
+        if (todo) {
+            return res.status(202).json({ todo });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
-        console.log("todoController error/deleteTodo - ", error);
+        console.log(
+            chalk.bgRed.inverse("todoController error/deleteTodo - ", error)
+        );
         return res.status(404).json({ message: "Delete todo error" });
     }
 };

@@ -5,7 +5,7 @@ const verifyAuth = require("../middleware/auth/verifyAuth");
 
 const usersController = require("../controllers/usersController");
 
-router.get("/:id", verifyAuth.checkAuth, usersController.getCurrentUser);
+router.get("/", verifyAuth.checkAuth, usersController.getCurrentUser);
 
 // router.get("/allUsers", verifyAuth.checkAuth, usersController.getAllUsers);
 

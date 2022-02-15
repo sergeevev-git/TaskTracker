@@ -17,7 +17,8 @@ const userService = {
     getCurrentUser: async () => {
         const userId = localStorageService.getUserId();
         const { data } = await httpService.get(
-            userEndPoint + localStorageService.getUserId(),
+            // userEndPoint + localStorageService.getUserId(),
+            userEndPoint,
             {
                 params: { userId },
             }

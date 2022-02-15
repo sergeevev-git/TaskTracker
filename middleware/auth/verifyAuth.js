@@ -2,6 +2,10 @@
 const tokenService = require("../../services/tokensService");
 
 exports.checkAuth = (req, res, next) => {
+    if (req.method === "OPTIONS") {
+        return next();
+    }
+
     try {
         const authHeader = req.headers.authorization;
         const accessToken = authHeader.split(" ")[1];
@@ -14,6 +18,7 @@ exports.checkAuth = (req, res, next) => {
         }
 
         req.user = tokenData;
+
         next();
     } catch (error) {
         console.log(

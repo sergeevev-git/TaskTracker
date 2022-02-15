@@ -7,12 +7,17 @@ const usersService = require("../services/usersService");
 getCurrentUser = async (req, res) => {
     try {
         const { userId } = req.query;
-        const user = await usersService.findUserById(userId);
-        // console.log("user", user);
-        return res.status(201).json({
-            username: user.username,
-            userId: user._id,
-        });
+
+        if (userId === req.user.userId) {
+            const user = await usersService.findUserById(userId);
+
+            return res.status(201).json({
+                username: user.username,
+                userId: user._id,
+            });
+        } else {
+            res.status(401).json({ message: "unauthorized user" });
+        }
     } catch (error) {
         console.log("userController error/getCurrentUser - ", error);
     }

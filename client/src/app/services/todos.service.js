@@ -4,7 +4,6 @@ const todosEndPoint = "todos/";
 
 const todosService = {
     fetchAll: async (userId) => {
-        //    console.log("fetchAll", userId);
         const { data } = await httpService.get(todosEndPoint, {
             params: { userId },
         });
@@ -13,15 +12,18 @@ const todosService = {
 
     add: async (todo) => {
         console.log("add payload", todo);
-        const { data } = await httpService.post(todosEndPoint + "add", todo);
+        const { data } = await httpService.post(todosEndPoint, todo);
         console.log("todosService add", data);
         return data;
     },
 
     important: async (id) => {
-        const { data } = await httpService.put(todosEndPoint + `important/${id}`, {
-            id,
-        });
+        const { data } = await httpService.put(
+            todosEndPoint + `important/${id}`,
+            {
+                id,
+            }
+        );
         return data;
     },
 
@@ -56,16 +58,22 @@ const todosService = {
 
     complete: async (id, drop) => {
         console.log("complete todo", id);
-        const { data } = await httpService.put(todosEndPoint + `complete/${id}`, {
-            id,
-            drop,
-        });
+        const { data } = await httpService.put(
+            todosEndPoint + `complete/${id}`,
+            {
+                id,
+                drop,
+            }
+        );
         return data;
     },
 
     delete: async (id) => {
         console.log("delete todo", id);
-        const { data } = await httpService.delete(todosEndPoint + `delete/${id}`, { id });
+        const { data } = await httpService.delete(
+            todosEndPoint + `delete/${id}`,
+            { id }
+        );
         console.log("delete todo data", data);
         return data;
     },

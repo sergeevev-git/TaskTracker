@@ -6,20 +6,39 @@ const verifyAuth = require("../middleware/auth/verifyAuth");
 
 const todosController = require("../controllers/todosController");
 
-router.get("/", verifyAuth.checkAuth, todosController.getAll);
+// router.get("/", verifyAuth.checkAuth, todosController.getAll);
 
-router.post("/add", verifyTodo.add, todosController.addTodo);
+// router.post(
+//     "/add",
+//     verifyAuth.checkAuth,
+//     verifyTodo.add,
+//     todosController.addTodo
+// );
 
-router.put("/important/:id", todosController.importantTodo);
+router
+    .route("/")
+    .get(verifyAuth.checkAuth, todosController.getAll)
+    .post(verifyAuth.checkAuth, verifyTodo.add, todosController.addTodo);
 
-router.patch("/edit/:id", verifyTodo.add, todosController.editTodo);
+router.put(
+    "/important/:id",
+    verifyAuth.checkAuth,
+    todosController.importantTodo
+);
 
-router.put("/new/:id", todosController.newTodo);
+router.patch(
+    "/edit/:id",
+    verifyAuth.checkAuth,
+    verifyTodo.add,
+    todosController.editTodo
+);
 
-router.put("/inwork/:id", todosController.inWorkTodo);
+router.put("/new/:id", verifyAuth.checkAuth, todosController.newTodo);
 
-router.put("/complete/:id", todosController.completeTodo);
+router.put("/inwork/:id", verifyAuth.checkAuth, todosController.inWorkTodo);
 
-router.delete("/delete/:id", todosController.deleteTodo);
+router.put("/complete/:id", verifyAuth.checkAuth, todosController.completeTodo);
+
+router.delete("/delete/:id", verifyAuth.checkAuth, todosController.deleteTodo);
 
 module.exports = router;
