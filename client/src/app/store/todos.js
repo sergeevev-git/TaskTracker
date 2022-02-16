@@ -3,6 +3,7 @@ import todosService from "../services/todos.service";
 import history from "../utils/history";
 import { clearErrors, setErrors } from "./errors";
 import { loadCurrentUserData } from "./user";
+import orderBy from "lodash.orderby";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -46,6 +47,7 @@ const todosSlice = createSlice({
             state.entities = action.payload;
         },
         updateBoardsSuccess: (state) => {
+            state.entities = orderBy(state.entities, ["deadline"], ["asc"]);
             state.boards[1].tasks = state.entities.filter(
                 (todo) => todo.status === "new"
             );
@@ -97,7 +99,9 @@ const todosSlice = createSlice({
             state.error = null;
         },
         deleteTodoSuccess(state, action) {
-            state.entities = state.entities.filter((todo) => todo._id !== action.payload);
+            state.entities = state.entities.filter(
+                (todo) => todo._id !== action.payload
+            );
         },
         deleteTodoFailed: (state, action) => {
             state.error = action.payload;
@@ -147,9 +151,7 @@ export const loadTodosList = (userId) => async (dispatch) => {
     try {
         const { todos } = await todosService.fetchAll(userId);
         dispatch(todosRecieved(todos));
-        console.log("test1");
         dispatch(updateBoardsSuccess());
-        console.log("test2");
         dispatch(updateStatistic());
     } catch (error) {
         const { status, statusText } = error.response;

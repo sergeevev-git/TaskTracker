@@ -6,7 +6,7 @@ exports.generateTokens = async (id, email, username) => {
     const accessToken = jwt.sign(
         { userId: id, email: email, userName: username },
         config.get("JWT_ACCESS_SECRET"),
-        { expiresIn: "30s" }
+        { expiresIn: "30m" }
     );
 
     const refreshToken = jwt.sign(

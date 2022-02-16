@@ -12,9 +12,8 @@ const Board = ({ board, ...props }) => {
         "in progress": "in-progress",
         finished: "finished",
     };
-    const ref = useRef(null);
+    // const ref = useRef(null);
     const statistic = useSelector(getStatistic());
-    // console.log("statistic: ", statistic);
 
     const { onDragOver, onDragLeave, onDragEnd, onDrop, currentTodo } = props;
 
@@ -23,7 +22,8 @@ const Board = ({ board, ...props }) => {
             {board.title === "add task" ? (
                 <div
                     className={
-                        "col-12 col-md-6 col-lg-3 coloumn-" + boardStyle[board.title]
+                        "col-12 col-md-6 col-lg-3 coloumn-" +
+                        boardStyle[board.title]
                     }
                 >
                     <div className="coloumn-header ">
@@ -48,10 +48,10 @@ const Board = ({ board, ...props }) => {
                             "col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-" +
                             boardStyle[board.title]
                         }
-                        ref={ref}
-                        onDragLeave={(e) => onDragLeave(e, ref)}
-                        onDragOver={(e) => onDragOver(e, ref)}
-                        onDragEnd={(e) => onDragEnd(e, ref)}
+                        // ref={ref}
+                        onDragLeave={(e) => onDragLeave(e)}
+                        onDragOver={(e) => onDragOver(e)}
+                        onDragEnd={(e) => onDragEnd(e)}
                         onDrop={(e) => onDrop(e, board, currentTodo)}
                     >
                         <div className="coloumn-header">

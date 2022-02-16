@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getIsLoggedIn, loadCurrentUserData } from "../../../store/user";
 import { getTodosLoadingStatus, loadTodosList } from "../../../store/todos";
 import localStorageService from "../../../services/localStorage.service";
-import Background from "../background";
+import Background from "./background";
 
 const AppLoader = ({ children }) => {
     const dispatch = useDispatch();
@@ -16,13 +16,17 @@ const AppLoader = ({ children }) => {
         }
     }, [isLoggedIn]);
 
+    // if (todosStatusLoading) return <Background />;
     if (todosStatusLoading) return <Background />;
 
     return children;
 };
 
 AppLoader.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
 };
 
 export default AppLoader;

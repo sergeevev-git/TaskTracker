@@ -3,7 +3,7 @@ function formatTime(data) {
     return data.length <= 1 ? `0${data}` : data;
 }
 
-const deadlineConvert = {
+const displayDeadline = {
     toMs: (date) => {
         return Date.parse(date);
     },
@@ -39,6 +39,19 @@ const deadlineConvert = {
             formatTime(date.getMinutes())
         );
     },
+
+    displayDate: (ms) => {
+        const data = new Date(ms);
+        const dataNow = new Date();
+        const dataDif = data.getTime() - dataNow.getTime();
+        const daysLeft = Math.floor(dataDif / 1000 / 60 / 60);
+
+        if (daysLeft < 24) {
+            return { dateStyle: "lastday", clockStyle: "-fill text-danger" };
+        } else if (daysLeft < 72) {
+            return { dateStyle: "threedays", clockStyle: " text-danger" };
+        } else return { dateStyle: "", clockStyle: "" };
+    },
 };
 
-export default deadlineConvert;
+export default displayDeadline;

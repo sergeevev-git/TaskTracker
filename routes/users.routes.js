@@ -7,6 +7,6 @@ const usersController = require("../controllers/usersController");
 
 router.get("/", verifyAuth.checkAuth, usersController.getCurrentUser);
 
-// router.get("/allUsers", verifyAuth.checkAuth, usersController.getAllUsers);
+router.get("/all", verifyAuth.checkAuth, usersController.getAllUsers);
 
 module.exports = router;

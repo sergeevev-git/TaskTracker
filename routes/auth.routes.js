@@ -27,6 +27,4 @@ router.post("/logout", authController.logout);
 
 router.get("/refresh", verifyRefresh.refresh, authController.refresh);
 
-// router.get("/users", verifyAuth.checkAuth, usersController.getAllUsers);
-
 module.exports = router;

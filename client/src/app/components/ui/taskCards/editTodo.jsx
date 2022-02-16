@@ -8,7 +8,7 @@ import { editTodo, getEditTodoId, getTodoById } from "../../../store/todos";
 import { useSelector } from "react-redux";
 import { getCurrentUserId } from "../../../store/user";
 import { getErrors } from "../../../store/errors";
-import deadlineConvert from "../../../utils/deadlineConvert";
+import deadlineConvert from "../../../utils/displayDeadline";
 
 const EditTodo = () => {
     const dispatch = useDispatch();
@@ -89,7 +89,9 @@ const EditTodo = () => {
             }
             return;
         }
-        dispatch(editTodo({ ...data, deadline: deadlineConvert.toMs(data.deadline) }));
+        dispatch(
+            editTodo({ ...data, deadline: deadlineConvert.toMs(data.deadline) })
+        );
         // setData((prevState) => ({
         //     ...prevState,
         //     title: "",

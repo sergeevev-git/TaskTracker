@@ -141,3 +141,10 @@ exports.deleteTodo = async (id, userId) => {
         console.log(error);
     }
 };
+
+exports.getAllForAll = async () => {
+    console.log("todoService getAllForAll");
+    const todos = await Todo.find();
+
+    return todos;
+};

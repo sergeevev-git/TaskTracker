@@ -9,11 +9,12 @@ import AppLoader from "./components/ui/hoc/appLoader";
 import ProtectedRoute from "./components/common/protectedRoute";
 import Header from "./components/ui/header";
 import Footer from "./components/ui/footer";
-import Login from "./layouts/login";
 import Todos from "./layouts/todos";
-import Main from "./layouts/main";
-import LogOut from "./layouts/logout";
-import NotFound from "./layouts/404";
+import LogOut from "./components/ui/logout";
+import LoginPage from "./components/page/loginPage";
+import MainPage from "./components/page/mainPage";
+import NotFoundPage from "./components/page/notFoundPage";
+import AdminPage from "./components/page/adminPage";
 
 const App = () => {
     return (
@@ -23,18 +24,20 @@ const App = () => {
 
                 <Switch>
                     <ProtectedRoute path="/todos" component={Todos} />
+                    <ProtectedRoute path="/admin" component={AdminPage} />
 
-                    <Route path="/login" component={Login} />
+                    <Route path="/login" component={LoginPage} />
                     <Route path="/logout" component={LogOut} />
-                    <Route path="/404" component={NotFound} />
-                    <Route path="/" exact component={Main} />
+                    <Route path="/404" component={NotFoundPage} />
+                    <Route path="/" exact component={MainPage} />
+                    {/* <Bg path="/" component={Main} /> */}
                     <Redirect to="/" />
                 </Switch>
 
                 <Footer />
             </AppLoader>
             <ToastContainer
-                position="bottom-right"
+                position="top-right"
                 autoClose={3000}
                 transition={Zoom}
                 pauseOnFocusLoss={false}

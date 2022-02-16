@@ -32,7 +32,11 @@ axiosInstance.interceptors.response.use(
     },
     async function (error) {
         const originalRequest = error.config;
-        if (error.response.status === 401 && error.config && !error.config._isRetry) {
+        if (
+            error.response.status === 401 &&
+            error.config &&
+            !error.config._isRetry
+        ) {
             originalRequest._isRetry = true;
             try {
                 const data = await authService.refresh();
@@ -42,7 +46,7 @@ axiosInstance.interceptors.response.use(
                 )}`;
                 return axiosInstance.request(originalRequest);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
                 toast.error("unauthorized user");
             }
         }
@@ -51,7 +55,7 @@ axiosInstance.interceptors.response.use(
             (error.response.status === 400 ||
                 (error.response.status >= 402 && error.response.status < 500));
         if (!expectedErrors && error.response.status !== 401) {
-            console.log(error);
+            // console.log(error);
             toast.error("some error happened");
         }
         return Promise.reject(error);

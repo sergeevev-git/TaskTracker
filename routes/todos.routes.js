@@ -17,7 +17,7 @@ const todosController = require("../controllers/todosController");
 
 router
     .route("/")
-    .get(verifyAuth.checkAuth, todosController.getAll)
+    .get(verifyAuth.checkAuth, todosController.getAllByUserId)
     .post(verifyAuth.checkAuth, verifyTodo.add, todosController.addTodo);
 
 router.put(
@@ -40,5 +40,7 @@ router.put("/inwork/:id", verifyAuth.checkAuth, todosController.inWorkTodo);
 router.put("/complete/:id", verifyAuth.checkAuth, todosController.completeTodo);
 
 router.delete("/delete/:id", verifyAuth.checkAuth, todosController.deleteTodo);
+
+router.get("/all", verifyAuth.checkAuth, todosController.getAllTodos);
 
 module.exports = router;

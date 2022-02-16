@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Background from "../components/ui/background";
-import { clearTodosStore } from "../store/todos";
-import { logOut } from "../store/user";
+import Background from "../ui/hoc/background";
+import { clearTodosStore } from "../../store/todos";
+import { logOut } from "../../store/user";
 
 const LogOut = () => {
     const dispatch = useDispatch();

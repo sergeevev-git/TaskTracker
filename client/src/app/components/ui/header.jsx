@@ -18,7 +18,9 @@ const Header = () => {
                     {isLoggedIn ? (
                         <>
                             <div className="d-flex">
-                                <div className="me-4">{currentUser.username}</div>
+                                <div className="me-4">
+                                    {currentUser.username}
+                                </div>
                                 <div className="me-2 login-text" role="button">
                                     <Link to="/logout">logout</Link>
                                 </div>

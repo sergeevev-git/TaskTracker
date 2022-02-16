@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import deadlineConvert from "../../../utils/deadlineConvert";
+import displayDeadline from "../../../utils/displayDeadline";
 import {
     importantTodo,
     inWorkTodo,
@@ -22,21 +22,26 @@ const TodoCard = ({
 }) => {
     const dispatch = useDispatch();
     const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop } = props;
-    const ref = useRef(null);
+    // const ref = useRef(null);
 
     const checkCondition = (condition) => {
         return condition ? "-fill" : "";
     };
+
+    const checkDeadline =
+        status !== "completed"
+            ? displayDeadline.displayDate(deadline)
+            : { dateStyle: "", clockStyle: "" };
 
     return (
         <>
             <div
                 className={"task-card" + (important ? " important" : "")}
                 draggable={true}
-                ref={ref}
-                onDragLeave={(e) => onDragLeave(e, ref)}
-                onDragOver={(e) => onDragOver(e, ref)}
-                onDragEnd={(e) => onDragEnd(e, ref)}
+                // ref={ref}
+                onDragLeave={(e) => onDragLeave(e)}
+                onDragOver={(e) => onDragOver(e)}
+                onDragEnd={(e) => onDragEnd(e)}
                 onDragStart={(e) => onDragStart(e, board, id)}
             >
                 <div className="task-card-header">
@@ -47,8 +52,15 @@ const TodoCard = ({
                     <p>{text}</p>
                 </div>
 
-                <div className="task-card-footer">
-                    <div className="deadline">{deadlineConvert.toDateText(deadline)}</div>
+                <div className="d-flex flex-nowrap task-card-footer">
+                    <div className={"deadline " + checkDeadline.dateStyle}>
+                        <i
+                            className={
+                                "bi me-2 bi-alarm" + checkDeadline.clockStyle
+                            }
+                        ></i>
+                        {displayDeadline.toDateText(deadline)}
+                    </div>
                     <div className="buttons">
                         {status !== "completed" && (
                             <>
@@ -84,7 +96,9 @@ const TodoCard = ({
                                     data-placement="bottom"
                                     title="take to work"
                                     role="button"
-                                    onClick={() => dispatch(inWorkTodo(id, false))}
+                                    onClick={() =>
+                                        dispatch(inWorkTodo(id, false))
+                                    }
                                 ></i>
                             </>
                         )}

@@ -77,6 +77,13 @@ const todosService = {
         console.log("delete todo data", data);
         return data;
     },
+
+    fetchAllforAll: async (userId) => {
+        const { data } = await httpService.get(todosEndPoint + "all", {
+            params: { userId },
+        });
+        return data;
+    },
 };
 
 export default todosService;

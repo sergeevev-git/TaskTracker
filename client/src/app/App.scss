@@ -180,6 +180,15 @@
             font-size: 14px;
             font-weight: 500;
             margin: 4px 6px;
+            &.threedays {
+                // text-shadow: #ff0000 0 0 10px;
+                border-bottom: 1px solid #ff0000;
+            }
+            &.lastday {
+                border-bottom: 1px solid #ff0000;
+                // border-top: 1px solid #ff0000;
+                // text-shadow: #ff0000 0 0 10px;
+            }
         }
         p,
         i {
@@ -212,7 +221,7 @@
         left: 8.5%;
     }
     .not-found {
-        background-color: #ececec;
+        background-color: rgba(#ececec, 0.7);
         border-radius: 5px;
         position: absolute;
         top: 30%;
@@ -221,5 +230,12 @@
             font-size: 48px;
             font-weight: 600;
         }
+    }
+    .admin {
+        background-color: rgba(#ececec, 0.7);
+        border-radius: 5px;
+        position: absolute;
+        top: 15%;
+        left: -8.25%;
     }
 }

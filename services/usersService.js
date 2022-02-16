@@ -30,3 +30,9 @@ exports.refreshUser = async (refreshToken) => {
 
     return tokenData;
 };
+
+exports.findAllUsers = async () => {
+    const users = await User.find();
+
+    return users;
+};

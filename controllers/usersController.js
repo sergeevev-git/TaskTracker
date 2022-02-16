@@ -23,19 +23,26 @@ getCurrentUser = async (req, res) => {
     }
 };
 
-// getAllUsers = async (req, res) => {
-//     try {
-//         const users = await User.find();
+getAllUsers = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        const isAdmin = await usersService.findUserById(userId);
 
-//         return res.status(201).json({ users });
-//     } catch (error) {
-//         console.log("userController error/getAllUsers - ", error);
-//     }
-// };
+        if (userId === req.user.userId && isAdmin.isAdmin) {
+            const users = await usersService.findAllUsers();
+
+            return res.status(201).json(users);
+        } else {
+            res.status(403).json({ message: "unauthorized operation" });
+        }
+    } catch (error) {
+        console.log("userController error/getAllUsers - ", error);
+    }
+};
 
 const usersController = {
     getCurrentUser,
-    // getAllUsers,
+    getAllUsers,
 };
 
 module.exports = usersController;
