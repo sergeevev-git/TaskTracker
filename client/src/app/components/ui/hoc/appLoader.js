@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { getIsLoggedIn, loadCurrentUserData } from "../../../store/user";
+import { getIsLoggedIn } from "../../../store/user";
 import { getTodosLoadingStatus, loadTodosList } from "../../../store/todos";
 import localStorageService from "../../../services/localStorage.service";
 import Background from "./background";
@@ -16,7 +16,6 @@ const AppLoader = ({ children }) => {
         }
     }, [isLoggedIn]);
 
-    // if (todosStatusLoading) return <Background />;
     if (todosStatusLoading) return <Background />;
 
     return children;

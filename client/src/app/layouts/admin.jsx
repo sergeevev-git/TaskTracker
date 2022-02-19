@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import localStorageService from "../services/localStorage.service";
-import Background from "../components/ui/hoc/background";
-import UserStatistics from "../components/ui/userStatistics";
 import {
     getAllDataLoadingStatus,
     getAllTodos,
@@ -11,7 +9,7 @@ import {
     loadAllUsersList,
 } from "../store/admin";
 import { getIsLoggedIn } from "../store/user";
-import AdminTable from "../components/ui/adminTable";
+import StatisticsTable from "../components/ui/statisticsTable";
 
 const Admin = () => {
     const dispatch = useDispatch();
@@ -38,11 +36,13 @@ const Admin = () => {
                   const user = {};
                   user.data = { ...u };
                   user.allTodos = todos.filter((todo) => todo.user === u._id);
-                  user.newTodos = todos.filter((todo) => todo.status === "new");
-                  user.inWorkTodos = todos.filter(
+                  user.newTodos = user.allTodos.filter(
+                      (todo) => todo.status === "new"
+                  );
+                  user.inWorkTodos = user.allTodos.filter(
                       (todo) => todo.status === "inWork"
                   );
-                  user.finishedTodos = todos.filter(
+                  user.finishedTodos = user.allTodos.filter(
                       (todo) => todo.status === "completed"
                   );
                   return user;
@@ -54,8 +54,8 @@ const Admin = () => {
 
     if (statistics) {
         return (
-            <div className="col-md-8 offset-md-3 shadow d-flex p-3 align-items-center flex-column admin">
-                <AdminTable statistics={statistics} />
+            <div className="col-md-8 offset-md-2 shadow d-flex p-2 admin">
+                <StatisticsTable statistics={statistics} />
             </div>
         );
     }

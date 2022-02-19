@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Board from "../components/ui/taskCards/board";
 import { useDispatch, useSelector } from "react-redux";
-import { getTodos, getBoadrs, newTodo, inWorkTodo, completeTodo } from "../store/todos";
+import {
+    getTodos,
+    getBoadrs,
+    newTodo,
+    inWorkTodo,
+    completeTodo,
+} from "../store/todos";
 import { getTodosError } from "../store/todos";
 import EditTodo from "../components/ui/taskCards/editTodo";
 
@@ -107,7 +113,7 @@ const Todos = () => {
     return (
         <main>
             <div className="container-fluid main">
-                <div className="row ">
+                <div className="row">
                     {boards.map((board) => {
                         return (
                             <Board
@@ -125,9 +131,8 @@ const Todos = () => {
                         );
                     })}
                 </div>
+                <EditTodo />
             </div>
-
-            <EditTodo />
         </main>
     );
 };

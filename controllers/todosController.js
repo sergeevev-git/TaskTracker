@@ -178,16 +178,17 @@ deleteTodo = async (req, res) => {
 
 getAllTodos = async (req, res) => {
     try {
-        const { userId } = req.query;
-        const isAdmin = await usersService.findUserById(userId);
+        // const { userId } = req.query;
+        // const isAdmin = await usersService.findUserById(userId);
 
-        if (userId === req.user.userId && isAdmin.isAdmin) {
-            const todos = await todosService.getAllForAll();
+        // if (userId === req.user.userId && isAdmin.isAdmin) {
+        // if (userId === req.user.userId) {
+        const todos = await todosService.getAllForAll();
 
-            return res.status(201).json(todos);
-        } else {
-            res.status(403).json({ message: "unauthorized operation" });
-        }
+        return res.status(201).json(todos);
+        // } else {
+        //     res.status(403).json({ message: "unauthorized operation" });
+        // }
     } catch (error) {
         console.log(
             chalk.bgRed.inverse("todoController error/getAllForAll - ", error)

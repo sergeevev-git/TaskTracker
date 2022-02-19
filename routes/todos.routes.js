@@ -3,6 +3,7 @@ const router = Router();
 
 const verifyTodo = require("../middleware/todos/verifyTodo");
 const verifyAuth = require("../middleware/auth/verifyAuth");
+const verifyAdmin = require("../middleware/auth/verifyAdmin");
 
 const todosController = require("../controllers/todosController");
 
@@ -41,6 +42,6 @@ router.put("/complete/:id", verifyAuth.checkAuth, todosController.completeTodo);
 
 router.delete("/delete/:id", verifyAuth.checkAuth, todosController.deleteTodo);
 
-router.get("/all", verifyAuth.checkAuth, todosController.getAllTodos);
+router.get("/all", verifyAdmin.checkAdmin, todosController.getAllTodos);
 
 module.exports = router;

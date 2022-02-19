@@ -86,7 +86,11 @@ const LoginForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
-            <CheckboxField value={data.stayOn} onChange={handleChange} name="stayOn">
+            <CheckboxField
+                value={data.stayOn}
+                onChange={handleChange}
+                name="stayOn"
+            >
                 Оставаться в системе
             </CheckboxField>
             {/* {enterError && <p className="text-danger">{enterError}</p>} */}

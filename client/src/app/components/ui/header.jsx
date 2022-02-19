@@ -21,6 +21,22 @@ const Header = () => {
                                 <div className="me-4">
                                     {currentUser.username}
                                 </div>
+                                {currentUser.admin && (
+                                    <>
+                                        <div
+                                            className="me-4 login-text"
+                                            role="button"
+                                        >
+                                            <Link to="/admin">statistics</Link>
+                                        </div>
+                                        <div
+                                            className="me-4 login-text"
+                                            role="button"
+                                        >
+                                            <Link to="/todos">todos</Link>
+                                        </div>
+                                    </>
+                                )}
                                 <div className="me-2 login-text" role="button">
                                     <Link to="/logout">logout</Link>
                                 </div>

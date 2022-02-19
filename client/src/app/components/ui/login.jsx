@@ -40,7 +40,7 @@ const Login = () => {
                         <div className="col-12 col-md-6 col-lg-3 coloumn-tasks"></div>
                         <div className="col-12 col-md-6 col-lg-3 coloumn-in-progress"></div>
                         <div className="col-12 col-md-6 col-lg-3 coloumn-finished"></div> */}
-            <div className="col-md-4 offset-md-3 shadow p-4 login-form">
+            <div className="col-md-4 offset-md-4 shadow p-4 login-form">
                 {formType === "register" ? (
                     <>
                         <h3 className="mb-4">Register</h3>

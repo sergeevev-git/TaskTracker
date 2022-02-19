@@ -67,6 +67,7 @@ export const registration = (payload) => async (dispatch) => {
         localStorageService.setTokens(data.accessToken, data.userId);
         dispatch(authRequestSuccess({ userId: data.userId }));
         history.push("/todos");
+        toast.success(`Welcome`);
     } catch (error) {
         const { errors, message } = error.response.data;
         if (errors) {
@@ -86,6 +87,7 @@ export const logIn =
             localStorageService.setTokens(data.accessToken, data.userId);
             dispatch(authRequestSuccess({ userId: data.userId }));
             history.push(redirect);
+            toast.success(`Welcome`);
         } catch (error) {
             const { errors, message } = error.response.data;
             if (errors) {
@@ -99,8 +101,13 @@ export const loadCurrentUserData = () => async (dispatch) => {
     dispatch(loadUserDataRequested());
     try {
         const data = await userService.getCurrentUser();
-        dispatch(userDataLoaded({ userId: data.userId, username: data.username }));
-        toast.success(`Welcome ${data.username}`);
+        dispatch(
+            userDataLoaded({
+                userId: data.userId,
+                username: data.username,
+                admin: data.admin,
+            })
+        );
     } catch (error) {
         dispatch(loadUserDataFailed(error.message));
     }
@@ -114,6 +121,7 @@ export const logOut = () => async (dispatch) => {
         dispatch(userLoggedOut());
         localStorageService.removeTokens();
         history.push("/");
+        toast.success(`See you soon`);
     } catch (error) {
         dispatch(logOutFailed(error.message));
     }

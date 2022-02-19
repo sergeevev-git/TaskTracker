@@ -16,7 +16,7 @@ const Main = () => {
         //             <div className="col-12 col-md-6 col-lg-3 coloumn-tasks"></div>
         //             <div className="col-12 col-md-6 col-lg-3 coloumn-in-progress"></div>
         //             <div className="col-12 col-md-6 col-lg-3 coloumn-finished"></div>
-        <div className="col-md-4 offset-md-3 shadow d-flex p-3 align-items-center flex-column not-found">
+        <div className="col-md-4 offset-md-4 shadow d-flex p-3 align-items-center flex-column not-found">
             Здесь баннер
         </div>
         //         </div>
