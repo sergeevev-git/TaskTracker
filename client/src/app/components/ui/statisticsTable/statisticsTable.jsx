@@ -5,16 +5,24 @@ import UserStatistics from "./userStatistics";
 const StatisticsTable = ({ statistics }) => {
     return (
         <>
-            <table className="table table-striped">
+            <table className="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        {/* <th scope="col"></th> */}
-                        <th scope="col">name/email</th>
-                        <th scope="col">all todos</th>
-                        <th scope="col">new </th>
-                        <th scope="col">in work</th>
-                        <th scope="col">finished</th>
+                        <th className="text-center" scope="col" colSpan="2">
+                            name/email
+                        </th>
+                        <th className="text-center" scope="col">
+                            all todos
+                        </th>
+                        <th className="text-center" scope="col">
+                            new{" "}
+                        </th>
+                        <th className="text-center" scope="col">
+                            in work
+                        </th>
+                        <th className="text-center" scope="col">
+                            finished
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

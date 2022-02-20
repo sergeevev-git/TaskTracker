@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CollapseWrapper from "./hoc/collapse";
+import CollapseWrapper from "../hoc/collapse";
 
 const UserStatisticsDetails = ({ todos }) => {
     return (

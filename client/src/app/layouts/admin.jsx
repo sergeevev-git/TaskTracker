@@ -9,7 +9,7 @@ import {
     loadAllUsersList,
 } from "../store/admin";
 import { getIsLoggedIn } from "../store/user";
-import StatisticsTable from "../components/ui/statisticsTable";
+import StatisticsTable from "../components/ui/statisticsTable/statisticsTable";
 
 const Admin = () => {
     const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const Admin = () => {
               })
             : [];
 
-    console.log("statistics: ", statistics);
+    // console.log("statistics: ", statistics);
     if (dataStatusLoading || statistics.length === 0) return null;
 
     if (statistics) {
