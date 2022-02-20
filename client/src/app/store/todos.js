@@ -8,18 +8,6 @@ import orderBy from "lodash.orderby";
 const todosSlice = createSlice({
     name: "todos",
     initialState: {
-        // entities: [
-        //     { title: "add task", tasks: null },
-        //     { title: "new tasks", tasks: null },
-        //     { title: "in progress", tasks: null },
-        //     { title: "finished", tasks: null },
-        // ],
-        // entities: {
-        //     add: { title: "add task", tasks: null },
-        //     new: { title: "new tasks", tasks: null },
-        //     inwork: { title: "in progress", tasks: null },
-        //     finished: { title: "finished", tasks: null },
-        // },
         entities: null,
         boards: [
             { title: "add task", tasks: null },
@@ -59,7 +47,7 @@ const todosSlice = createSlice({
             );
             state.isLoading = false;
         },
-        updateStatistic: (state) => {
+        updateStatisticsBoard: (state) => {
             state.statistic[0].count = state.entities.length;
             state.statistic[1].count = state.boards[1].tasks.length;
             state.statistic[2].count = state.boards[2].tasks.length;
@@ -129,7 +117,7 @@ const {
     todosRequested,
     todosRecieved,
     updateBoardsSuccess,
-    updateStatistic,
+    updateStatisticsBoard,
     todosRequestFailed,
     addTodoSuccess,
     addTodoFailed,
@@ -144,7 +132,6 @@ const {
 } = actions;
 
 const addTodoRequested = createAction("todos/addTodoRequested");
-// const addTodoFailed = createAction("todos/addTodoFailed");
 
 export const loadTodosList = (userId) => async (dispatch) => {
     dispatch(todosRequested());
@@ -152,7 +139,7 @@ export const loadTodosList = (userId) => async (dispatch) => {
         const { todos } = await todosService.fetchAll(userId);
         dispatch(todosRecieved(todos));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { status, statusText } = error.response;
         if (status === 404) {
@@ -169,10 +156,9 @@ export const addTodo = (payload) => async (dispatch) => {
     dispatch(clearErrors());
     try {
         const { todo } = await todosService.add(payload);
-        console.log("addTodo data", todo);
         dispatch(addTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { errors, message } = error.response.data;
         if (errors) {
@@ -186,7 +172,6 @@ export const importantTodo = (todoId) => async (dispatch) => {
     dispatch(updateTodoRequested());
     try {
         const { todo } = await todosService.important(todoId);
-        console.log("importantTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
@@ -208,7 +193,6 @@ export const editTodo = (payload) => async (dispatch) => {
     dispatch(clearErrors());
     try {
         const { todo } = await todosService.edit(payload);
-        console.log("editTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
     } catch (error) {
@@ -229,7 +213,7 @@ export const newTodo = (todoId) => async (dispatch) => {
         console.log("newTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -244,10 +228,9 @@ export const inWorkTodo = (todoId, drop) => async (dispatch) => {
     dispatch(updateTodoRequested());
     try {
         const { todo } = await todosService.inWork(todoId, drop);
-        console.log("inWorkTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -262,10 +245,9 @@ export const completeTodo = (todoId, drop) => async (dispatch) => {
     dispatch(updateTodoRequested());
     try {
         const { todo } = await todosService.complete(todoId, drop);
-        console.log("completeTodo todo", todo);
         dispatch(updateTodoSuccess(todo));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -280,10 +262,10 @@ export const deleteTodo = (todoId) => async (dispatch) => {
     dispatch(deleteTodoRequested());
     try {
         const { todo } = await todosService.delete(todoId);
-        console.log("deleteTodo data", todo);
+        console.log(todo);
         dispatch(deleteTodoSuccess(todoId));
         dispatch(updateBoardsSuccess());
-        dispatch(updateStatistic());
+        dispatch(updateStatisticsBoard());
     } catch (error) {
         const { statusText } = error.response;
         if (statusText) {
@@ -292,10 +274,6 @@ export const deleteTodo = (todoId) => async (dispatch) => {
             dispatch(deleteTodoFailed(error.message));
         }
     }
-};
-
-export const clearTodosStore = () => (dispatch) => {
-    dispatch(todosCleared());
 };
 
 export const getTodos = () => (state) => state.todos.entities;
@@ -316,5 +294,9 @@ export const getEditTodoId = () => (state) => state.todos.editTodoId;
 export const getEditTodoStatus = () => (state) => state.todos.isEditTodo;
 
 export const getTodosError = () => (state) => state.todos.error;
+
+export const clearTodosStore = () => (dispatch) => {
+    dispatch(todosCleared());
+};
 
 export default todosReducer;

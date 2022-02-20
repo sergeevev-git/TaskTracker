@@ -28,15 +28,7 @@ const StatisticsTable = ({ statistics }) => {
                 <tbody>
                     {statistics.length > 0 &&
                         statistics.map((user, index) => {
-                            return (
-                                <>
-                                    <UserStatistics
-                                        key={index}
-                                        user={user}
-                                        index={index}
-                                    />
-                                </>
-                            );
+                            return <UserStatistics key={index} user={user} />;
                         })}
                 </tbody>
             </table>

@@ -133,6 +133,7 @@ exports.deleteTodo = async (id, userId) => {
         const todo = await Todo.findById(id);
 
         if (todo.user.toString() === userId) {
+            await todo.remove();
             return todo;
         } else {
             return null;

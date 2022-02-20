@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import configFile from "../config/config.json";
-import { setTokens } from "../services/localStorage.service";
+import localStorageService from "../services/localStorage.service";
 import authService from "./auth.service";
 
 const axiosInstance = axios.create({
@@ -12,9 +12,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     function (config) {
-        config.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
-            configFile.TOKEN_ACCESS_KEY
-        )}`;
+        config.headers.common[
+            "Authorization"
+        ] = `Bearer ${localStorageService.getAccessToken()}`;
         config.headers.post["Content-Type"] = "application/json";
         config.headers.get["Content-Type"] = "application/json";
 
@@ -25,7 +25,6 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-//  перехватчик, 1й аргумент  - положительный ответ, 2 - error(unexpected)
 axiosInstance.interceptors.response.use(
     (res) => {
         return res;
@@ -40,10 +39,12 @@ axiosInstance.interceptors.response.use(
             originalRequest._isRetry = true;
             try {
                 const data = await authService.refresh();
-                setTokens(data.accessToken, data.userId);
-                originalRequest.headers.Authorization = `Bearer ${localStorage.getItem(
-                    configFile.TOKEN_ACCESS_KEY
-                )}`;
+                localStorageService.setTokens(
+                    data.accessToken,
+                    data.userId,
+                    false
+                );
+                originalRequest.headers.Authorization = `Bearer ${localStorageService.getAccessToken()}`;
                 return axiosInstance.request(originalRequest);
             } catch (error) {
                 // console.log(error);

@@ -34,6 +34,10 @@ const adminSlice = createSlice({
         allTodosRequestFailed: (state, action) => {
             state.error = action.payload;
         },
+        statisticsCleared(state) {
+            state.users = null;
+            state.todos = null;
+        },
     },
 });
 
@@ -45,6 +49,7 @@ const {
     allTodosRequested,
     allTodosRequestSuccess,
     allTodosRequestFailed,
+    statisticsCleared,
 } = actions;
 
 export const loadAllUsersList = (userId) => async (dispatch) => {
@@ -89,5 +94,8 @@ export const loadAllTodosList = (userId) => async (dispatch) => {
 export const getAllTodos = () => (state) => state.admin.todos;
 export const getAllUsers = () => (state) => state.admin.users;
 export const getAllDataLoadingStatus = () => (state) => state.admin.isLoading;
+export const clearStatistics = () => (dispatch) => {
+    dispatch(statisticsCleared());
+};
 
 export default adminReducer;

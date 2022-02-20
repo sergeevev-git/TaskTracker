@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import TextField from "../../common/form/textField";
 import TextAreaField from "../../common/form/textAreaField";
 import { validator } from "../../../utils/validator";
@@ -34,7 +34,6 @@ const EditTodo = () => {
 
     useEffect(() => {
         if (todo) {
-            console.log("todo: ", todo);
             setData((prevState) => ({
                 ...prevState,
                 _id: todo._id,
@@ -52,33 +51,38 @@ const EditTodo = () => {
         }));
     };
 
-    const validatorConfig = {
-        title: {
-            isRequired: {
-                message: "Название задачи обязательно для заполнения",
+    const validate = useCallback(() => {
+        const validatorConfig = {
+            title: {
+                isRequired: {
+                    message: "Название задачи обязательно для заполнения",
+                },
             },
-        },
-        text: {
-            isRequired: {
-                message: "Описание задачи обязательно для заполнения",
+            text: {
+                isRequired: {
+                    message: "Описание задачи обязательно для заполнения",
+                },
             },
-        },
-        deadline: {
-            isRequired: {
-                message: "Крайний срок обязателен для заполнения",
+            deadline: {
+                isRequired: {
+                    message: "Крайний срок обязателен для заполнения",
+                },
             },
-        },
-    };
-
-    useEffect(() => {
-        validate();
-    }, [data]);
-
-    const validate = () => {
+        };
         const errors = validator(data, validatorConfig);
         setErrors(errors);
         return Object.keys(errors).length === 0;
-    };
+    }, [data]);
+
+    // useEffect(() => {
+    //     validate();
+    // }, [data]);
+
+    // const validate = () => {
+    //     const errors = validator(data, validatorConfig);
+    //     setErrors(errors);
+    //     return Object.keys(errors).length === 0;
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -157,7 +161,6 @@ const EditTodo = () => {
                                         className="btn btn-primary btn-edit-save w-45"
                                         data-bs-dismiss="modal"
                                     >
-                                        {/* <i className="bi bi-plus-square"></i> */}
                                         save
                                     </button>
                                 </div>

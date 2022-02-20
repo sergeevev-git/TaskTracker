@@ -51,8 +51,6 @@ const {
     userLoggedOut,
 } = actions;
 
-// const authRequested = createAction("user/authRequested");
-
 const loadUserDataRequested = createAction("user/loadUserDataRequested");
 const loadUserDataFailed = createAction("user/loadUserDataFailed");
 
@@ -64,7 +62,7 @@ export const registration = (payload) => async (dispatch) => {
     dispatch(clearErrors());
     try {
         const data = await authService.registration(payload);
-        localStorageService.setTokens(data.accessToken, data.userId);
+        localStorageService.setTokens(data.accessToken, data.userId, false);
         dispatch(authRequestSuccess({ userId: data.userId }));
         history.push("/todos");
         toast.success(`Welcome`);
@@ -84,7 +82,11 @@ export const logIn =
         dispatch(clearErrors());
         try {
             const data = await authService.logIn(payload);
-            localStorageService.setTokens(data.accessToken, data.userId);
+            localStorageService.setTokens(
+                data.accessToken,
+                data.userId,
+                payload.stayOn
+            );
             dispatch(authRequestSuccess({ userId: data.userId }));
             history.push(redirect);
             toast.success(`Welcome`);
@@ -117,7 +119,9 @@ export const logOut = () => async (dispatch) => {
     dispatch(logOutRequested());
     try {
         const data = await authService.logOut();
-        console.log(data);
+        if (data.message === "logout successful") {
+            console.log("Bye!");
+        }
         dispatch(userLoggedOut());
         localStorageService.removeTokens();
         history.push("/");

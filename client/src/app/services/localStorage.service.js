@@ -1,10 +1,16 @@
 import configFile from "../config/config.json";
 
-export function setTokens(accessToken, id) {
+export function setTokens(accessToken, id, stayOn) {
+    console.log(stayOn);
     //   время смерти токена
     // const expiresDate = new Date().getTime() + expiresIn * 1000;
-    localStorage.setItem(configFile.TOKEN_ACCESS_KEY, accessToken);
-    localStorage.setItem(configFile.CURRENT_USER_ID, id);
+    if (stayOn) {
+        localStorage.setItem(configFile.TOKEN_ACCESS_KEY, accessToken);
+        localStorage.setItem(configFile.CURRENT_USER_ID, id);
+    } else {
+        sessionStorage.setItem(configFile.TOKEN_ACCESS_KEY, accessToken);
+        sessionStorage.setItem(configFile.CURRENT_USER_ID, id);
+    }
     // localStorage.setItem(TOKEN_REFRESH_KEY, refreshToken);
     // localStorage.setItem(EXPIRES_KEY, expiresDate);
 }
@@ -12,12 +18,26 @@ export function setTokens(accessToken, id) {
 export function removeTokens() {
     localStorage.removeItem(configFile.TOKEN_ACCESS_KEY);
     localStorage.removeItem(configFile.CURRENT_USER_ID);
+    sessionStorage.removeItem(configFile.TOKEN_ACCESS_KEY);
+    sessionStorage.removeItem(configFile.CURRENT_USER_ID);
     // localStorage.removeItem(TOKEN_REFRESH_KEY);
     // localStorage.removeItem(EXPIRES_KEY);
 }
 
 export function getAccessToken() {
-    return localStorage.getItem(configFile.TOKEN_ACCESS_KEY);
+    console.log(
+        "localStorage",
+        localStorage.getItem(configFile.TOKEN_ACCESS_KEY)
+    );
+    console.log(
+        "sessionStorage",
+        sessionStorage.getItem(configFile.TOKEN_ACCESS_KEY)
+    );
+    if (localStorage.getItem(configFile.TOKEN_ACCESS_KEY)) {
+        return localStorage.getItem(configFile.TOKEN_ACCESS_KEY);
+    } else {
+        return sessionStorage.getItem(configFile.TOKEN_ACCESS_KEY);
+    }
 }
 
 // export function getRefreshToken() {
@@ -29,7 +49,11 @@ export function getAccessToken() {
 // }
 
 export function getUserId() {
-    return localStorage.getItem(configFile.CURRENT_USER_ID);
+    if (localStorage.getItem(configFile.CURRENT_USER_ID)) {
+        return localStorage.getItem(configFile.CURRENT_USER_ID);
+    } else {
+        return sessionStorage.getItem(configFile.CURRENT_USER_ID);
+    }
 }
 
 const localStorageService = {
