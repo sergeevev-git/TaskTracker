@@ -80,6 +80,7 @@
     border-radius: 5px;
     background-color: #90ccf4;
     box-shadow: 2px 2px 10px gray;
+    border: 0.5px solid rgba(128, 128, 128, 0.5);
     &__title {
         margin: 10px;
     }
@@ -142,6 +143,7 @@
     margin-bottom: 20px;
     width: 100%;
     box-shadow: 2px 2px 10px gray;
+    border: 0.5px solid rgba(128, 128, 128, 0.5);
     li {
         background-color: #90ccf4;
     }
@@ -152,6 +154,7 @@
     margin-bottom: 10px;
     // margin-top: 5px;
     box-shadow: 2px 2px 10px gray;
+    border: 0.5px solid rgba(128, 128, 128, 0.5);
     width: 90%;
     &__important {
         border: 2px solid gray;

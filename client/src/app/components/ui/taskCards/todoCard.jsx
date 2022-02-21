@@ -21,7 +21,7 @@ const TodoCard = ({
     ...props
 }) => {
     const dispatch = useDispatch();
-    const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop } = props;
+    const { onDragOver, onDragLeave, onDragStart, onDragEnd } = props;
 
     const checkCondition = (condition) => {
         return condition ? "-fill" : "";
@@ -42,7 +42,7 @@ const TodoCard = ({
                 onDragLeave={(e) => onDragLeave(e)}
                 onDragOver={(e) => onDragOver(e)}
                 onDragEnd={(e) => onDragEnd(e)}
-                onDragStart={(e) => onDragStart(e, board, id)}
+                onDragStart={() => onDragStart(id)}
             >
                 <div className="task-card__header">
                     <p>{title}</p>

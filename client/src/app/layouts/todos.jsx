@@ -18,20 +18,20 @@ const Todos = () => {
         }
     }, [todosError]);
 
-    const handleDragOver = (e, ref) => {
+    const handleDragOver = (e) => {
         e.preventDefault();
         e.target.closest(".col-12").classList.add("main_opacity");
     };
 
-    const handleDragLeave = (e, board) => {
+    const handleDragLeave = (e) => {
         e.target.closest(".col-12").classList.remove("main_opacity");
     };
 
-    const handleDragStart = (e, board, todo) => {
+    const handleDragStart = (todo) => {
         setCurrentTodo(todo);
     };
 
-    const handleDragEnd = (e, board) => {
+    const handleDragEnd = (e) => {
         e.target.closest(".col-12").classList.remove("main_opacity");
     };
 
