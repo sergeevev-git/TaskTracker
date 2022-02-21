@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const UserTaskTitle = ({ taskTitle }) => {
     return (
-        <div className="statistics-card">
+        <div className="statistics-table__statistics-card">
             <p>{taskTitle}</p>
         </div>
     );

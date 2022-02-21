@@ -30,7 +30,7 @@ const App = () => {
                     <Route path="/logout" component={LogOut} />
                     <Route path="/404" component={NotFoundPage} />
                     <Route path="/" exact component={MainPage} />
-                    {/* <Bg path="/" component={Main} /> */}
+
                     <Redirect to="/" />
                 </Switch>
 

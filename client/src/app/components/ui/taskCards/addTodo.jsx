@@ -85,8 +85,8 @@ const AddTodo = () => {
 
     return (
         <div className="add-task">
-            <form className="mt-1 mb-30" onSubmit={handleSubmit}>
-                <div className="div-title">
+            <form onSubmit={handleSubmit}>
+                <div className="add-task__title">
                     <TextField
                         name="title"
                         value={data.title}
@@ -95,7 +95,7 @@ const AddTodo = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <div className="div-text-area">
+                <div className="add-task__text-area">
                     <TextAreaField
                         name="text"
                         value={data.text}
@@ -108,25 +108,23 @@ const AddTodo = () => {
                     />
                 </div>
 
-                <div className="row d-flex justify-content-end control">
-                    <div className="col-auto div-deadline">
+                <div className="add-task__control">
+                    <div className="add-task__deadline">
                         <TextField
                             name="deadline"
                             type="datetime-local"
                             value={data.deadline}
-                            classLabel="text-white mb-0 input-w"
+                            classLabel="text-white mb-0"
                             onChange={handleChange}
                         />
                     </div>
 
-                    {/* <div className="row d-flex justify-content-end control"> */}
-                    <div className="col d-flex justify-content-end div-btn-add">
-                        <button className="btn btn-primary w-100 btn-add">
+                    <div className="add-task__btn-add">
+                        <button className="btn btn-primary w-100">
                             <i className="bi bi-plus-square"></i>
                         </button>
                     </div>
                 </div>
-                {/* </div> */}
             </form>
         </div>
     );

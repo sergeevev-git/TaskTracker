@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import displayDeadline from "../../../utils/displayDeadline";
@@ -22,7 +22,6 @@ const TodoCard = ({
 }) => {
     const dispatch = useDispatch();
     const { onDragOver, onDragLeave, onDragStart, onDragEnd, onDrop } = props;
-    // const ref = useRef(null);
 
     const checkCondition = (condition) => {
         return condition ? "-fill" : "";
@@ -36,24 +35,30 @@ const TodoCard = ({
     return (
         <>
             <div
-                className={"task-card" + (important ? " important" : "")}
+                className={
+                    "task-card" + (important ? " task-card__important" : "")
+                }
                 draggable={true}
-                // ref={ref}
                 onDragLeave={(e) => onDragLeave(e)}
                 onDragOver={(e) => onDragOver(e)}
                 onDragEnd={(e) => onDragEnd(e)}
                 onDragStart={(e) => onDragStart(e, board, id)}
             >
-                <div className="task-card-header">
+                <div className="task-card__header">
                     <p>{title}</p>
                 </div>
 
-                <div className="task-card-text">
+                <div className="task-card__text">
                     <p>{text}</p>
                 </div>
 
-                <div className="d-flex flex-nowrap task-card-footer">
-                    <div className={"deadline " + checkDeadline.dateStyle}>
+                <div className="task-card__footer">
+                    <div
+                        className={
+                            "task-card__footer_deadline " +
+                            checkDeadline.dateStyle
+                        }
+                    >
                         <i
                             className={
                                 "bi me-2 bi-alarm" + checkDeadline.clockStyle

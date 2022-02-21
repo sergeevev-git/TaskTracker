@@ -51,38 +51,33 @@ const EditTodo = () => {
         }));
     };
 
-    const validate = useCallback(() => {
-        const validatorConfig = {
-            title: {
-                isRequired: {
-                    message: "Название задачи обязательно для заполнения",
-                },
+    const validatorConfig = {
+        title: {
+            isRequired: {
+                message: "Название задачи обязательно для заполнения",
             },
-            text: {
-                isRequired: {
-                    message: "Описание задачи обязательно для заполнения",
-                },
+        },
+        text: {
+            isRequired: {
+                message: "Описание задачи обязательно для заполнения",
             },
-            deadline: {
-                isRequired: {
-                    message: "Крайний срок обязателен для заполнения",
-                },
+        },
+        deadline: {
+            isRequired: {
+                message: "Крайний срок обязателен для заполнения",
             },
-        };
+        },
+    };
+
+    useEffect(() => {
+        validate();
+    }, [data]);
+
+    const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
         return Object.keys(errors).length === 0;
-    }, [data]);
-
-    // useEffect(() => {
-    //     validate();
-    // }, [data]);
-
-    // const validate = () => {
-    //     const errors = validator(data, validatorConfig);
-    //     setErrors(errors);
-    //     return Object.keys(errors).length === 0;
-    // };
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -96,12 +91,6 @@ const EditTodo = () => {
         dispatch(
             editTodo({ ...data, deadline: deadlineConvert.toMs(data.deadline) })
         );
-        // setData((prevState) => ({
-        //     ...prevState,
-        //     title: "",
-        //     text: "",
-        //     deadline: "",
-        // }));
     };
 
     return (
@@ -115,8 +104,8 @@ const EditTodo = () => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="edit-task">
-                        <form className="mt-1 mb-30" onSubmit={handleSubmit}>
-                            <div className="div-title">
+                        <form onSubmit={handleSubmit}>
+                            <div className="edit-task__title">
                                 <TextField
                                     name="title"
                                     value={data.title}
@@ -125,7 +114,7 @@ const EditTodo = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div className="div-text-area">
+                            <div className="edit-task__text-area">
                                 <TextAreaField
                                     name="text"
                                     value={data.text}
@@ -138,8 +127,8 @@ const EditTodo = () => {
                                 />
                             </div>
 
-                            <div className="row d-flex justify-content-between control">
-                                <div className="col-auto div-deadline">
+                            <div className="edit-task__control">
+                                <div className="edit-task__deadline">
                                     <TextField
                                         name="deadline"
                                         type="datetime-local"
@@ -149,16 +138,16 @@ const EditTodo = () => {
                                     />
                                 </div>
 
-                                <div className="col d-flex flex-wrap justify-content-end  div-btn-edit">
+                                <div className="edit-task__btn-edit">
                                     <button
                                         type="button"
-                                        className="btn btn-secondary btn-edit-close w-45"
+                                        className="btn btn-secondary btn-edit-close "
                                         data-bs-dismiss="modal"
                                     >
                                         close
                                     </button>
                                     <button
-                                        className="btn btn-primary btn-edit-save w-45"
+                                        className="btn btn-primary edit-task__btn-edit-save "
                                         data-bs-dismiss="modal"
                                     >
                                         save
@@ -167,31 +156,6 @@ const EditTodo = () => {
                             </div>
                         </form>
                     </div>
-
-                    {/* <div className="modal-header">
-                    <h5 className="modal-title" id="editTodoModal">
-                        {todo.title}
-                    </h5>
-                    <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div className="modal-body">{todo.text} </div>
-                <div className="modal-footer">
-                    <button
-                        type="button"
-                        className="btn btn-secondary btn-add"
-                        data-bs-dismiss="modal"
-                    >
-                        close
-                    </button>
-                    <button type="button" className="btn btn-primary btn-add">
-                        save
-                    </button>
-                </div> */}
                 </div>
             </div>
         </div>

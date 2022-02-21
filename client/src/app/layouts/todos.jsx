@@ -20,11 +20,11 @@ const Todos = () => {
 
     const handleDragOver = (e, ref) => {
         e.preventDefault();
-        e.target.closest(".col-12").classList.add("opacity");
+        e.target.closest(".col-12").classList.add("main_opacity");
     };
 
     const handleDragLeave = (e, board) => {
-        e.target.closest(".col-12").classList.remove("opacity");
+        e.target.closest(".col-12").classList.remove("main_opacity");
     };
 
     const handleDragStart = (e, board, todo) => {
@@ -32,13 +32,13 @@ const Todos = () => {
     };
 
     const handleDragEnd = (e, board) => {
-        e.target.closest(".col-12").classList.remove("opacity");
+        e.target.closest(".col-12").classList.remove("main_opacity");
     };
 
     const handleDrop = (e, board, todo) => {
         e.preventDefault();
 
-        e.target.closest(".col-12").classList.remove("opacity");
+        e.target.closest(".col-12").classList.remove("main_opacity");
 
         console.log("drop board", board);
         console.log("drop task", todo);

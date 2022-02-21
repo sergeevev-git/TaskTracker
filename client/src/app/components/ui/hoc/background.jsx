@@ -5,11 +5,11 @@ const Background = ({ children }) => {
     return (
         <div className="parent">
             <div className="container-fluid main">
-                <div className="row ">
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-add-stat"></div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-tasks"></div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-in-progress"></div>
-                    <div className="col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-finished"></div>
+                <div className="row">
+                    <div className="col-12 col-md-6 col-lg-3 main__coloumn-add-stat"></div>
+                    <div className="col-12 col-md-6 col-lg-3 main__coloumn-tasks"></div>
+                    <div className="col-12 col-md-6 col-lg-3 main__coloumn-in-progress"></div>
+                    <div className="col-12 col-md-6 col-lg-3 main__coloumn-finished"></div>
                     {children}
                 </div>
             </div>

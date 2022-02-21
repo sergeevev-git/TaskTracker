@@ -54,7 +54,7 @@ const Admin = () => {
 
     if (statistics) {
         return (
-            <div className="col-md-8 offset-md-2 shadow d-flex p-2 admin">
+            <div className="col-md-8 offset-md-2 shadow p-2 admin">
                 <StatisticsTable statistics={statistics} />
             </div>
         );

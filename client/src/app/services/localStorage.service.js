@@ -1,7 +1,6 @@
 import configFile from "../config/config.json";
 
 export function setTokens(accessToken, id, stayOn) {
-    console.log(stayOn);
     //   время смерти токена
     // const expiresDate = new Date().getTime() + expiresIn * 1000;
     if (stayOn) {
@@ -25,14 +24,6 @@ export function removeTokens() {
 }
 
 export function getAccessToken() {
-    console.log(
-        "localStorage",
-        localStorage.getItem(configFile.TOKEN_ACCESS_KEY)
-    );
-    console.log(
-        "sessionStorage",
-        sessionStorage.getItem(configFile.TOKEN_ACCESS_KEY)
-    );
     if (localStorage.getItem(configFile.TOKEN_ACCESS_KEY)) {
         return localStorage.getItem(configFile.TOKEN_ACCESS_KEY);
     } else {

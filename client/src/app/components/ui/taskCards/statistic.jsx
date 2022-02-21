@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Statistic = ({ title, count }) => {
     return (
-        <li className="list-group-item text-white li-statitics">
+        <li className="list-group-item text-white">
             <div className="d-flex justify-content-between">
                 <div>{title}</div>
                 <div>{count}</div>

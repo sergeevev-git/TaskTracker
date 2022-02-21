@@ -11,33 +11,33 @@ const Header = () => {
         <header>
             <nav className="navbar fixed-top header">
                 <div className="container-fluid">
-                    <h2 className="logo">
+                    <h2 className="header__logo">
                         <Link to="/">TaskTracker</Link>
                     </h2>
 
                     {isLoggedIn ? (
                         <>
                             <div className="d-flex">
-                                <div className="me-4">
+                                <div className="header__username">
                                     {currentUser.username}
                                 </div>
                                 {currentUser.admin && (
                                     <>
                                         <div
-                                            className="me-4 login-text"
+                                            className="header__links"
                                             role="button"
                                         >
                                             <Link to="/admin">statistics</Link>
                                         </div>
                                         <div
-                                            className="me-4 login-text"
+                                            className="header__links"
                                             role="button"
                                         >
                                             <Link to="/todos">todos</Link>
                                         </div>
                                     </>
                                 )}
-                                <div className="me-2 login-text" role="button">
+                                <div className="header__links" role="button">
                                     <Link to="/logout">logout</Link>
                                 </div>
                             </div>

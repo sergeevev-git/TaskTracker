@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckboxField from "../common/form/checkBoxField";
@@ -23,54 +23,54 @@ const LoginForm = () => {
         }));
     };
 
-    // const validatorConfig = {
-    //     email: {
-    //         isRequired: {
-    //             message: "Электронная почта обязательна для заполнения",
+    // const validate = useCallback(() => {
+    //     console.log(data);
+    //     const validatorConfig = {
+    //         email: {
+    //             isRequired: {
+    //                 message: "Электронная почта обязательна для заполнения",
+    //             },
+    //             isEmail: { message: "Электронная почта введена некорректно" },
     //         },
-    //     },
-    //     password: {
-    //         isRequired: { message: "Пароль обязателен для заполнения" },
-    //     },
-    // };
-
-    const validate = useCallback(() => {
-        console.log(data);
-        const validatorConfig = {
-            email: {
-                isRequired: {
-                    message: "Электронная почта обязательна для заполнения",
-                },
-                isEmail: { message: "Электронная почта введена некорректно" },
-            },
-            password: {
-                isRequired: { message: "Пароль обязателен для заполнения" },
-                isCapitalSymbol: {
-                    message: "Пароль должен содержать заглавные буквы",
-                },
-                isContainDigit: {
-                    message: "Пароль должен содержать цифры",
-                },
-                min: {
-                    message: "Пароль должен быть минимум 8 символов",
-                    value: 8,
-                },
-            },
-        };
-        const errors = validator(data, validatorConfig);
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
-    }, [data]);
-
-    // useEffect(() => {
-    //     validate();
-    // }, [data]);
-
-    // const validate = () => {
+    //         password: {
+    //             isRequired: { message: "Пароль обязателен для заполнения" },
+    //             isCapitalSymbol: {
+    //                 message: "Пароль должен содержать заглавные буквы",
+    //             },
+    //             isContainDigit: {
+    //                 message: "Пароль должен содержать цифры",
+    //             },
+    //             min: {
+    //                 message: "Пароль должен быть минимум 8 символов",
+    //                 value: 8,
+    //             },
+    //         },
+    //     };
     //     const errors = validator(data, validatorConfig);
     //     setErrors(errors);
     //     return Object.keys(errors).length === 0;
-    // };
+    // }, [data]);
+
+    const validatorConfig = {
+        email: {
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения",
+            },
+        },
+        password: {
+            isRequired: { message: "Пароль обязателен для заполнения" },
+        },
+    };
+
+    useEffect(() => {
+        validate();
+    }, [data]);
+
+    const validate = () => {
+        const errors = validator(data, validatorConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const isValid = Object.keys(errors).length === 0;
 

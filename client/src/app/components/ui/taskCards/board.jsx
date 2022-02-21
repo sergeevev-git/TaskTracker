@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { getStatistic } from "../../../store/todos";
 import AddTask from "./addTodo";
@@ -12,9 +12,7 @@ const Board = ({ board, ...props }) => {
         "in progress": "in-progress",
         finished: "finished",
     };
-    // const ref = useRef(null);
     const statistic = useSelector(getStatistic());
-
     const { onDragOver, onDragLeave, onDragEnd, onDrop, currentTodo } = props;
 
     return (
@@ -22,49 +20,43 @@ const Board = ({ board, ...props }) => {
             {board.title === "add task" ? (
                 <div
                     className={
-                        "col-12 col-md-6 col-lg-3 coloumn-" +
+                        "col-12 col-md-6 col-lg-3 main__coloumn-" +
                         boardStyle[board.title]
                     }
                 >
-                    <div className="coloumn-header ">
+                    <div className="main__coloumn-header">
                         <h4>{board.title}</h4>
                     </div>
                     <hr />
                     <AddTask />
-                    <div className="coloumn-header header-statitics">
+                    <div className="main__coloumn-header">
                         <h4>statistic</h4>
                     </div>
                     <hr />
-                    <ul className="list-group list-group-flush statitics ">
+                    <div className="statitics">
                         {statistic.map((stat) => {
                             return <Statistic key={stat.title} {...stat} />;
                         })}
-                    </ul>
+                    </div>
                 </div>
             ) : (
                 board.tasks && (
                     <div
                         className={
-                            "col-12 col-md-6 col-lg-3 d-flex flex-column coloumn-" +
+                            "col-12 col-md-6 col-lg-3 main__coloumn-" +
                             boardStyle[board.title]
                         }
-                        // ref={ref}
                         onDragLeave={(e) => onDragLeave(e)}
                         onDragOver={(e) => onDragOver(e)}
                         onDragEnd={(e) => onDragEnd(e)}
                         onDrop={(e) => onDrop(e, board, currentTodo)}
                     >
-                        <div className="coloumn-header">
+                        <div className="main__coloumn-header">
                             <h4>{board.title}</h4>
                         </div>
                         <hr />
-                        <div className="coloumn-content">
-                            <TodoList
-                                // board={board.title}
-                                // todos={board.tasks}
-                                board={board}
-                                {...props}
-                            />
+                        <div className="main__coloumn-content">
+                            <TodoList board={board} {...props} />
                         </div>
                     </div>
                 )
