@@ -1,12 +1,6 @@
-// const Todo = require("../models/todo");
 const chalk = require("chalk");
 const todosService = require("../services/todosService");
 const usersService = require("../services/usersService");
-
-// ни в одном запросе мы не сравниваем с req.user = data из verifyAuth
-// потому что тудушки мы получаем только для текущего пользователя
-// и все действия производятся только для тудушек текущего, а про остальные
-// тудушки пользователь не знает
 
 getAllByUserId = async (req, res) => {
     try {
@@ -178,17 +172,9 @@ deleteTodo = async (req, res) => {
 
 getAllTodos = async (req, res) => {
     try {
-        // const { userId } = req.query;
-        // const isAdmin = await usersService.findUserById(userId);
-
-        // if (userId === req.user.userId && isAdmin.isAdmin) {
-        // if (userId === req.user.userId) {
         const todos = await todosService.getAllForAll();
 
         return res.status(201).json(todos);
-        // } else {
-        //     res.status(403).json({ message: "unauthorized operation" });
-        // }
     } catch (error) {
         console.log(
             chalk.bgRed.inverse("todoController error/getAllForAll - ", error)

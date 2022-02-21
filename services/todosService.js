@@ -129,7 +129,6 @@ exports.completeTodo = async (id, drop, userId) => {
 exports.deleteTodo = async (id, userId) => {
     console.log("todoService deleteTodo", id);
     try {
-        // const todo = await Todo.findOneAndDelete({ _id: id });
         const todo = await Todo.findById(id);
 
         if (todo.user.toString() === userId) {

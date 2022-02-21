@@ -49,7 +49,6 @@ const Admin = () => {
               })
             : [];
 
-    // console.log("statistics: ", statistics);
     if (dataStatusLoading || statistics.length === 0) return null;
 
     if (statistics) {

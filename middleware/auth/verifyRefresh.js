@@ -1,4 +1,3 @@
-// const Token = require("../../models/token");
 const tokenService = require("../../services/tokensService");
 
 const { check, validationResult } = require("express-validator");

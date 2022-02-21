@@ -77,7 +77,6 @@ export const loadAllTodosList = (userId) => async (dispatch) => {
     try {
         const todos = await todosService.fetchAllforAll(userId);
         dispatch(allTodosRequestSuccess(todos));
-        // history.push("/admin");
     } catch (error) {
         const { errors, message } = error.response.data;
         if (errors) {

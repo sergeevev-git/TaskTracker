@@ -26,17 +26,9 @@ getCurrentUser = async (req, res) => {
 
 getAllUsers = async (req, res) => {
     try {
-        // const { userId } = req.query;
-        // const isAdmin = await usersService.findUserById(userId);
-
-        // if (userId === req.user.userId && isAdmin.isAdmin) {
-        // if (userId === req.user.userId) {
         const users = await usersService.findAllUsers();
 
         return res.status(201).json(users);
-        // } else {
-        //     res.status(403).json({ message: "unauthorized operation" });
-        // }
     } catch (error) {
         console.log("userController error/getAllUsers - ", error);
     }

@@ -1,4 +1,3 @@
-// const Token = require("../models/token");
 const tokenService = require("../../services/tokensService");
 
 exports.checkAuth = (req, res, next) => {

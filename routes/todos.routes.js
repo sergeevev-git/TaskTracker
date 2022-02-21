@@ -7,15 +7,6 @@ const verifyAdmin = require("../middleware/auth/verifyAdmin");
 
 const todosController = require("../controllers/todosController");
 
-// router.get("/", verifyAuth.checkAuth, todosController.getAll);
-
-// router.post(
-//     "/add",
-//     verifyAuth.checkAuth,
-//     verifyTodo.add,
-//     todosController.addTodo
-// );
-
 router
     .route("/")
     .get(verifyAuth.checkAuth, todosController.getAllByUserId)

@@ -47,7 +47,6 @@ axiosInstance.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${localStorageService.getAccessToken()}`;
                 return axiosInstance.request(originalRequest);
             } catch (error) {
-                // console.log(error);
                 toast.error("unauthorized user");
             }
         }
@@ -56,8 +55,7 @@ axiosInstance.interceptors.response.use(
             (error.response.status === 400 ||
                 (error.response.status >= 402 && error.response.status < 500));
         if (!expectedErrors && error.response.status !== 401) {
-            // console.log(error);
-            toast.error("some error happened");
+            console.log(error);
         }
         return Promise.reject(error);
     }

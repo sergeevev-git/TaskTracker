@@ -8,7 +8,6 @@ checkAdmin = [
         .withMessage("unauthorized operation")
         .custom(async (userId) => {
             return await User.findOne({ _id: userId }).then(async (user) => {
-                // console.log("checkAdmin: user", user);
                 if (user) {
                     if (!user.isAdmin) {
                         return Promise.reject("unauthorized operation");

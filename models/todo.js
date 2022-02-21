@@ -4,7 +4,6 @@ const schema = new Schema(
     {
         title: { type: String, required: true },
         text: { type: String, required: true },
-        // deadline: { type: Date, required: true },
         deadline: { type: Number, required: true },
         status: { type: String, required: true, default: "new" },
         important: false,
