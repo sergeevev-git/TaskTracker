@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getCurrentUserData, getIsLoggedIn } from "../../store/user";
 
 const Header = () => {
     const isLoggedIn = useSelector(getIsLoggedIn());
     const currentUser = useSelector(getCurrentUserData());
+    const location = useLocation();
 
     return (
         <header>
@@ -24,13 +25,21 @@ const Header = () => {
                                 {currentUser.admin && (
                                     <>
                                         <div
-                                            className="header__links"
+                                            className={
+                                                location.pathname === "/admin"
+                                                    ? "header__links_active"
+                                                    : "header__links"
+                                            }
                                             role="button"
                                         >
                                             <Link to="/admin">statistics</Link>
                                         </div>
                                         <div
-                                            className="header__links"
+                                            className={
+                                                location.pathname === "/todos"
+                                                    ? "header__links_active"
+                                                    : "header__links"
+                                            }
                                             role="button"
                                         >
                                             <Link to="/todos">todos</Link>
@@ -43,7 +52,7 @@ const Header = () => {
                             </div>
                         </>
                     ) : (
-                        <div className="me-4 login-text" role="button">
+                        <div className="header__links" role="button">
                             <Link to="/login">login/sign up</Link>
                         </div>
                     )}
