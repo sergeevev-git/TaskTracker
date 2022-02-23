@@ -10,7 +10,7 @@ const Main = () => {
     return isLoggedIn ? (
         <Redirect to="/todos" />
     ) : (
-        <div className="col-md-8 offset-md-2 shadow d-flex p-3 align-items-center flex-column slider">
+        <div className="col-md-8 offset-md-2 shadow p-3 slider">
             <Carousel />
         </div>
     );
