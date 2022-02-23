@@ -66,7 +66,6 @@ export const loadAllUsersList = (userId) => async (dispatch) => {
         } else {
             dispatch(allUsersRequestFailed(error.message));
         }
-        console.log("allUsersRequestFailed error");
         history.push("/404");
     }
 };

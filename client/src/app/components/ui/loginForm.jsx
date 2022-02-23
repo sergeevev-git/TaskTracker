@@ -28,22 +28,10 @@ const LoginForm = () => {
     //     const validatorConfig = {
     //         email: {
     //             isRequired: {
-    //                 message: "Электронная почта обязательна для заполнения",
-    //             },
-    //             isEmail: { message: "Электронная почта введена некорректно" },
-    //         },
+    //                 message: "Электронная почта обязательна для заполнения"},
+    //        },
     //         password: {
     //             isRequired: { message: "Пароль обязателен для заполнения" },
-    //             isCapitalSymbol: {
-    //                 message: "Пароль должен содержать заглавные буквы",
-    //             },
-    //             isContainDigit: {
-    //                 message: "Пароль должен содержать цифры",
-    //             },
-    //             min: {
-    //                 message: "Пароль должен быть минимум 8 символов",
-    //                 value: 8,
-    //             },
     //         },
     //     };
     //     const errors = validator(data, validatorConfig);

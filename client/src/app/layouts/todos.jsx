@@ -40,9 +40,6 @@ const Todos = () => {
 
         e.target.closest(".col-12").classList.remove("main_opacity");
 
-        console.log("drop board", board);
-        console.log("drop task", todo);
-
         board.title === "in progress"
             ? dispatch(inWorkTodo(todo, true))
             : board.title === "finished"
