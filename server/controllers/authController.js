@@ -23,9 +23,7 @@ registration = async (req, res) => {
             httpOnly: true,
         });
 
-        console.log(
-            chalk.bgWhite.inverse(`New user: ${username} - email: ${email}`)
-        );
+        console.log(chalk.bgWhite(`New user: ${username} - email: ${email}`));
         return res.status(201).json({
             accessToken: tokens.accessToken,
             userId: id,

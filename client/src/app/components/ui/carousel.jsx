@@ -16,7 +16,7 @@ const Carousel = () => {
                         className="d-block w-100"
                         alt="tasklist"
                     />
-                    <div className="carousel-caption d-none d-md-block">
+                    <div className="carousel-caption p-0 d-none d-md-block">
                         <p>easy add / easy manage</p>
                     </div>
                 </div>
@@ -26,7 +26,7 @@ const Carousel = () => {
                         className="d-block w-100"
                         alt="statistics"
                     />
-                    <div className="carousel-caption d-none d-md-block">
+                    <div className="carousel-caption p-0 d-none d-md-block">
                         <p>easy oversee</p>
                     </div>
                 </div>

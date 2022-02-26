@@ -23,7 +23,11 @@ app.use(
 app.use("/api", routes);
 
 if (process.env.NODE_ENV === "production") {
-    console.log(chalk.red.inverse("production"));
+    app.use("/", express.static(path.join(__dirname, "client")));
+    const indexPath = path.join(__dirname, "client", "index.html");
+    app.get("*", (req, res) => {
+        res.sendFile(indexPath);
+    });
 } else console.log(chalk.white.inverse("development"));
 
 async function start() {
