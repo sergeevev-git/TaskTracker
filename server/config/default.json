@@ -1,7 +1,7 @@
 {
     "PORT": 5000,
     "CLIENT_URL": "http://localhost:3000",
-    "DB_URI": "mongodb+srv://admin:admin@cluster0.jrsb2.mongodb.net/TaskTracker?retryWrites=true&w=majority",
+    "DB_URI": "mongodb+srv://admin:password@cluster0.jrsb2.mongodb.net/TaskTracker?retryWrites=true&w=majority",
     "JWT_ACCESS_SECRET": "rhemWpBWWTRvWbjK9h",
     "JWT_REFRESH_SECRET": "n4sGDEBKnZL80JRvR59ex7fdmeMfSMVppnKx"
 }
